@@ -3,10 +3,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
+
+#include "Struct/struct.h"
 #include "list.h"
 #include "treemap.h"
-
-#define MAXCHAR 30
 
 int main(int argc, const char * argv[])
 {

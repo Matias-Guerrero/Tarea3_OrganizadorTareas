@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 #include "Struct/struct.h"
-#include "list.h"
+#include "List/list.h"
 #include "TreeMap/treemap.h"
 
 int main(int argc, const char * argv[])

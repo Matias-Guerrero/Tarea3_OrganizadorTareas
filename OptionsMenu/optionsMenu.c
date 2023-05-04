@@ -8,6 +8,7 @@
 #include "../Struct/struct.h"
 #include "../List/list.h"
 #include "../TreeMap/treemap.h"
+#include "../Map/map.h"
 
 // Aca se definen las funciones que se van a usar en el main
 

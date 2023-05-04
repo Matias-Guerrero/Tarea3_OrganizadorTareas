@@ -7,6 +7,7 @@
 #include "Struct/struct.h"
 #include "List/list.h"
 #include "TreeMap/treemap.h"
+#include "Map/Map.h"
 #include "OptionsMenu/optionsMenu.h"
 
 /*
@@ -18,13 +19,22 @@ int lower_than_int(void * key1, void * key2) {
     return 0;
 }
 
+/*
+  función para comparar claves de tipo string
+  retorna 1 si son iguales
+*/
+int is_equal_string(void * key1, void * key2) {
+    if(strcmp((char*)key1, (char*)key2)==0) return 1;
+    return 0;
+}
 
 int main(int argc, const char * argv[])
 {
     int opcion;
     char nombreTarea[MAXCHAR];
 
-    TreeMap* tareas = createTreeMap(lower_than_int);
+    TreeMap* tareasPrioridad = createTreeMap(lower_than_int);
+    Map* tareasNombre = createMap(is_equal_string);
 
     system("cls");
     puts("========================================");

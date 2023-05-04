@@ -38,7 +38,7 @@ int main(int argc, const char * argv[])
     do
     {
         system("cls");
-        //mostrarMenu();
+        mostrarMenu();
         puts("");
         printf("Ingrese la opcion que desea realizar: ");
         scanf("%d", &opcion);
@@ -78,7 +78,8 @@ int main(int argc, const char * argv[])
 
             case 7:
                 system("cls");
-
+                puts("Gracias por usar el programa :) Hasta luego!");
+                sleep(2);
                 break;  
             
             default:

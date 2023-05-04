@@ -22,6 +22,7 @@ int lower_than_int(void * key1, void * key2) {
 int main(int argc, const char * argv[])
 {
     int opcion;
+    char nombreTarea[MAXCHAR];
 
     TreeMap* tareas = createTreeMap(lower_than_int);
 
@@ -48,6 +49,9 @@ int main(int argc, const char * argv[])
         {
             case 1:
                 system("cls");
+               
+                ingresarValor(nombreTarea, "    Ingrese el nombre de la tarea");
+                
                 
                 break;
 

@@ -5,4 +5,6 @@
 
 void mostrarMenu();
 
+void ingresarValor(char *valor, char *mensaje);
+
 #endif /*   optionsMenu_h   */

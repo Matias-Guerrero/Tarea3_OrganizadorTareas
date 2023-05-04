@@ -25,3 +25,12 @@ void mostrarMenu()
     puts("7. Salir");
     puts("=======================================================");
 }
+
+void ingresarValor(char *valor, char *mensaje)
+{
+    puts("========================================");
+    printf("%s:\n", mensaje);
+    puts("========================================");
+    scanf("%30[^\n]", valor);
+    while(getchar() != '\n');
+}

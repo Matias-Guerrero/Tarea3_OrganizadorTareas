@@ -1,5 +1,5 @@
-#ifndef STRUCT.H
-#define STRUCT.H
+#ifndef STRUCT_h
+#define STRUCT_h
 
 #define MAXCHAR 100
 
@@ -9,4 +9,4 @@ typedef struct {
     char tareaPrecedente[MAXCHAR];
 } Tarea;
 
-#endif /*   STRUCT.H   */
+#endif /*   STRUCT_h   */

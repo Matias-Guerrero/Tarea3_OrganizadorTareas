@@ -52,7 +52,7 @@ En esta aplicacion implementamos las siguientes TDAs:
 ---
 Se nos pidio crear una aplicación, la cual tiene por objetivo organizar las tareas por hacer. En donde el usuario ingresa el nombre de la tarea, la prioridad que tiene y establecer si tiene precedencia entre las otras tareas.
 
-Para mantener ordenada nuestra `branch` utilizamos carpetas.
+Para mantener ordenada nuestro proyecto utilizamos subcarpetas.
 
 Para esto definimos la siguiente struct en c:
 

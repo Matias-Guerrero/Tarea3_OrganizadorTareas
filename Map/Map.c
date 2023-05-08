@@ -101,7 +101,11 @@ void insertMap(Map * list, void * key, void * value){
 
     //se revisa si el elemento existe
     while(aux){
-        if(list->is_equal(aux->key,key)) return;
+        if(list->is_equal(aux->key,key)){
+            // si existe se actualiza el valor
+            aux->data=value;
+            return;
+        }
         aux=aux->next;
     }
 

@@ -14,4 +14,6 @@ void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int 
 
 void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente);
 
+void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas);
+
 #endif /*   optionsMenu_h   */

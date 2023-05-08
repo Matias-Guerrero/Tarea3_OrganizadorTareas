@@ -101,6 +101,9 @@ int main(int argc, const char * argv[])
 
             case 3: 
                 system("cls");
+
+                // Se llama a la funcion mostrarTareasPorHacer
+                mostrarTareasPorHacer(arbolTareas, mapaTareas);
                 
                 break;  
 

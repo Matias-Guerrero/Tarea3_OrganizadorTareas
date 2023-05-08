@@ -19,7 +19,7 @@ void mostrarMenu()
     puts("=======================================================");
     puts("1. Agregar tarea");
     puts("2. Establecer precedencia entre tareas"); 
-    puts("3. Mostrar tareas por hacer"); // Sin implementar
+    puts("3. Mostrar tareas por hacer");
     puts("4. Marcar tarea como completada"); // Sin implementar
     puts("5. Deshacer ultima accion"); // Sin implementar
     puts("6. Cargar datos de tareas desde un archivo de texto"); // Sin implementar
@@ -93,6 +93,9 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
                 // Actualizar tarea en el arbol
                 actualizarNodoActual(arbolTareas, (void *)tareaActual->prioridad, (void *)tareaActual);
 
+                // Actualizar tarea en el mapa (Lineas nuevas)
+                insertMap(mapaTareas, tareaActual->nombreTarea, tareaActual); // Lineas nuevas
+
                 system("cls");
                 // Mostrar mensaje de exito
                 puts("\n========================================");
@@ -119,4 +122,134 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
     
     system("pause");
     
+}
+
+// Funcion para buscar en una lista
+bool buscarEnLista(List *lista, char *nombreTarea)
+{
+    // Buscar tarea en la lista
+    Tarea *tareaActual = (Tarea *) firstList(lista);
+
+    while(tareaActual != NULL)
+    {
+        // Verificar si la tarea actual es la que se busca
+        if(strcmp(tareaActual->nombreTarea, nombreTarea) == 0)
+        {
+            return true;
+        }
+
+        // Obtener siguiente tarea
+        tareaActual = (Tarea *) nextList(lista);
+    }
+
+    return false;
+}
+
+// Funcion recursiva para mostrar las tareas con precedencia
+void mostrarTareasPrecedencia(char *nombreTarea, Map *mapaTareas, List *listaTareasPorHacer)
+{
+    // Buscar tarea en el mapa
+    Tarea *tarea = (Tarea *) searchMap(mapaTareas, nombreTarea);
+
+    // Verificar si la tarea actual tiene precedencia
+    if(strcmp(tarea->tareaPrecedente, "") != 0)
+    {
+        // Obtener tarea precedente
+        mostrarTareasPrecedencia(tarea->tareaPrecedente, mapaTareas, listaTareasPorHacer);
+
+        // Agregar tarea a la lista
+        pushBack(listaTareasPorHacer, tarea);
+    }
+    else
+    {
+        // Agregar tarea a la lista
+        pushBack(listaTareasPorHacer, tarea);
+    }
+}
+
+
+// Funcion que muestra las tareas por hacer segun su prioridad y la tarea precedente
+void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas)
+{
+    // Se verifica que el arbol no este vacio
+    if(firstTreeMap(arbolTareas) == NULL)
+    {
+        system("cls");
+
+        // Mostrar mensaje de error
+        puts("\n========================================");
+        puts("        No hay tareas por hacer");
+        puts("========================================\n");
+
+        system("pause");
+        return;
+    }
+    
+    // Se crea una lista para almacenar las tareas por hacer
+    List *listaTareasPorHacer = createList();
+
+    // Se recorre el arbol para obtener las tareas por hacer
+    Pair *parActual = firstTreeMap(arbolTareas);
+
+    while(parActual != NULL)
+    {
+        // Obtener tarea actual
+        Tarea *tareaActual = (Tarea *)parActual->value;
+
+        // Verificar si la tarea actual ya se completo
+        if(!buscarEnLista(listaTareasPorHacer, tareaActual->nombreTarea))
+        {
+            // Verificar si la tarea actual tiene precedente
+            if(strcmp(tareaActual->tareaPrecedente, "") != 0)
+            {
+                // Mostrar tareas con precedencia
+                mostrarTareasPrecedencia(tareaActual->tareaPrecedente, mapaTareas, listaTareasPorHacer);
+            }
+
+            // Se agrega la tarea actual a la lista de tareas por hacer
+            pushBack(listaTareasPorHacer, tareaActual);
+
+        }
+
+        // Obtener siguiente tarea
+        parActual = nextTreeMap(arbolTareas);
+    }
+
+    // Se muestra la lista de tareas por hacer
+    system("cls");
+
+    // Mostrar mensaje de exito
+    puts("\n=============================================");
+    puts("              Tareas por hacer");
+    puts("Ordenadas por prioridad y precedencia (si hay):");
+    puts("=============================================\n");
+
+    // Se recorre la lista para mostrar las tareas por hacer
+    Tarea *tareaActual = (Tarea *) firstList(listaTareasPorHacer);
+
+    while(tareaActual != NULL)
+    {
+        // Mostrar tarea actual con su prioridad y su precedente
+        printf(" %s (Prioridad: %d)", tareaActual->nombreTarea, tareaActual->prioridad);
+
+        // Verificar si la tarea actual tiene precedente
+        if(strcmp(tareaActual->tareaPrecedente, "") != 0)
+        {
+            printf(" - Precedente: %s\n", tareaActual->tareaPrecedente);
+        }
+        else
+        {
+            printf("\n");
+        }
+
+        // Obtener siguiente tarea
+        tareaActual = (Tarea *) nextList(listaTareasPorHacer);
+    }
+
+    puts("\n=============================================\n");
+
+    system("pause");
+
+    // Se libera la memoria de la lista
+    free(listaTareasPorHacer);
 }

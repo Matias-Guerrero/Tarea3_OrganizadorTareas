@@ -50,12 +50,11 @@ TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
     return NULL;
 }
 
-
+// Funcion actualizada
 void insertTreeMap(TreeMap * tree, void* key, void * value) {
     if(tree == NULL) return;
 
     TreeNode* nodoActual = tree->root;
-
     TreeNode* nuevoNodo = createTreeNode(key, value);
 
     if(nodoActual != NULL)
@@ -68,7 +67,22 @@ void insertTreeMap(TreeMap * tree, void* key, void * value) {
 
             if(is_equal(tree, nodoActual->pair->key, key))
             {
-                return;
+                if(nodoActual->left == NULL)
+                {
+                    nodoActual->left = nuevoNodo;
+                    nuevoNodo->parent = nodoActual;
+                    break;
+                }
+                else if(nodoActual->right == NULL)
+                {
+                    nodoActual->right = nuevoNodo;
+                    nuevoNodo->parent = nodoActual;
+                    break;
+                }
+                else
+                {
+                    nodoActual = nodoActual->left;
+                }
             }
             else if(tree->lower_than(key, nodoActual->pair->key))
             {
@@ -80,24 +94,26 @@ void insertTreeMap(TreeMap * tree, void* key, void * value) {
             }
         }
 
-        if(tree->lower_than(key, nodoPadre->pair->key))
+        if(nodoActual == NULL)
         {
-            nodoPadre->left = nuevoNodo;
-        }
-        else
-        {
-            nodoPadre->right = nuevoNodo;
-        }
+            if(tree->lower_than(key, nodoPadre->pair->key))
+            {
+                nodoPadre->left = nuevoNodo;
+            }
+            else
+            {
+                nodoPadre->right = nuevoNodo;
+            }
 
-        nuevoNodo->parent = nodoPadre;
-        tree->current = nuevoNodo;
+            nuevoNodo->parent = nodoPadre;
+            tree->current = nuevoNodo;
+        }
     }
     else
     {
         tree->root = nuevoNodo;
         tree->current = nuevoNodo;
     }
-
 }
 
 TreeNode * minimum(TreeNode * x){
@@ -302,4 +318,91 @@ Pair * nextTreeMap(TreeMap * tree){
     tree->current = nodoActual;
 
     return tree->current->pair;
+}
+
+// Nuevas funciones:
+
+// Funcion para eliminar el nodo del current del arbol
+void removerNodoActual(TreeMap * tree) {
+    if(tree == NULL || tree->root == NULL) return;
+
+    TreeNode* nodoActual = tree->current;
+
+    if(nodoActual->left == NULL && nodoActual->right == NULL)
+    {
+        if(nodoActual->parent == NULL)
+        {
+            tree->root = NULL;
+        }
+        else
+        {
+            if(nodoActual->parent->left == nodoActual)
+            {
+                nodoActual->parent->left = NULL;
+            }
+            else
+            {
+                nodoActual->parent->right = NULL;
+            }
+        }
+    }
+    else if(nodoActual->left == NULL)
+    {
+        if(nodoActual->parent == NULL)
+        {
+            tree->root = nodoActual->right;
+        }
+        else
+        {
+            if(nodoActual->parent->left == nodoActual)
+            {
+                nodoActual->parent->left = nodoActual->right;
+            }
+            else
+            {
+                nodoActual->parent->right = nodoActual->right;
+            }
+
+            nodoActual->right->parent = nodoActual->parent;
+        }
+    }
+    else if(nodoActual->right == NULL)
+    {
+        if(nodoActual->parent == NULL)
+        {
+            tree->root = nodoActual->left;
+        }
+        else
+        {
+            if(nodoActual->parent->left == nodoActual)
+            {
+                nodoActual->parent->left = nodoActual->left;
+            }
+            else
+            {
+                nodoActual->parent->right = nodoActual->left;
+            }
+
+            nodoActual->left->parent = nodoActual->parent;
+        }
+    }
+    else
+    {
+        TreeNode* min = minimum(nodoActual->right);
+
+        nodoActual->pair->key = min->pair->key;
+        nodoActual->pair->value = min->pair->value;
+
+        removeNode(tree, min);
+    }
+}
+
+// Actualizar el nodo actual del arbol con el nodo que se pasa por parametro
+void actualizarNodoActual(TreeMap * tree, void* key, void* value) {
+    if(tree == NULL || tree->root == NULL) return;
+
+    TreeNode* nodoActual = tree->current;
+
+    nodoActual->pair->key = key;
+    nodoActual->pair->value = value;
 }

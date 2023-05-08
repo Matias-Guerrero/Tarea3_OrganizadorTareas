@@ -30,12 +30,17 @@ int is_equal_string(void * key1, void * key2) {
 
 int main(int argc, const char * argv[])
 {
+    // Declaracion de variables
     int opcion;
+    int prioridadTarea;
     char nombreTarea[MAXCHAR];
+    char auxiliar[MAXCHAR];
 
-    TreeMap* tareasPrioridad = createTreeMap(lower_than_int);
-    Map* tareasNombre = createMap(is_equal_string);
+    // Declaracion de estructuras
+    TreeMap* arbolTareas = createTreeMap(lower_than_int);
+    Map* mapaTareas = createMap(is_equal_string);
 
+    // Titulo del programa
     system("cls");
     puts("========================================");
     puts("    Tarea 3: Organizador de tareas");
@@ -49,8 +54,12 @@ int main(int argc, const char * argv[])
     do
     {
         system("cls");
+
+        // Mostrar menu
         mostrarMenu();
         puts("");
+
+        // Pedir opcion
         printf("Ingrese la opcion que desea realizar: ");
         scanf("%d", &opcion);
         while(getchar() != '\n');
@@ -60,8 +69,15 @@ int main(int argc, const char * argv[])
             case 1:
                 system("cls");
                
+                // Pedir nombre de la tarea
                 ingresarValor(nombreTarea, "    Ingrese el nombre de la tarea");
-                
+
+                // Pedir prioridad de la tarea|
+                ingresarValor(auxiliar, "    Ingrese la prioridad de la tarea");
+                prioridadTarea = atoi(auxiliar);
+
+                // Se llama a la funcion agregarTarea
+                agregarTarea(arbolTareas, mapaTareas, nombreTarea, prioridadTarea);
                 
                 break;
 

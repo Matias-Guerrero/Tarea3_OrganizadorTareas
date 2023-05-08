@@ -91,7 +91,7 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
                 strcpy(tareaActual->tareaPrecedente, nombreTareaPrecedente);
 
                 // Actualizar tarea en el arbol
-                actualizarNodoActual(arbolTareas, tareaActual->prioridad, tareaActual);
+                actualizarNodoActual(arbolTareas, (void *)tareaActual->prioridad, (void *)tareaActual);
 
                 system("cls");
                 // Mostrar mensaje de exito

@@ -12,4 +12,6 @@ void ingresarValor(char *valor, char *mensaje);
 
 void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea);
 
+void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente);
+
 #endif /*   optionsMenu_h   */

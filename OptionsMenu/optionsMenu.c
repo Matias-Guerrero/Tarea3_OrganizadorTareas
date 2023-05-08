@@ -18,7 +18,7 @@ void mostrarMenu()
     puts("     Menu: Organizador de tareas");
     puts("=======================================================");
     puts("1. Agregar tarea");
-    puts("2. Establecer precedencia entre tareas"); // Sin implementar
+    puts("2. Establecer precedencia entre tareas"); 
     puts("3. Mostrar tareas por hacer"); // Sin implementar
     puts("4. Marcar tarea como completada"); // Sin implementar
     puts("5. Deshacer ultima accion"); // Sin implementar
@@ -68,4 +68,55 @@ void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int 
     }
 
     system("pause");
+}
+
+void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente)
+{
+    // Verificar que ambas tareas existan
+    if(searchMap(mapaTareas, nombreTarea) != NULL && searchMap(mapaTareas, nombreTareaPrecedente) != NULL)
+    {
+        // Buscar tarea en el arbol
+        Pair *parActual = firstTreeMap(arbolTareas);
+
+        // Recorrer el arbol hasta encontrar la tarea
+        while(parActual != NULL)
+        {
+            // Obtener tarea actual
+            Tarea *tareaActual = (Tarea *)parActual->value;
+
+            // Verificar si la tarea actual es la que se busca
+            if(strcmp(tareaActual->nombreTarea, nombreTarea) == 0)
+            {
+                // Asignar tarea precedente
+                strcpy(tareaActual->tareaPrecedente, nombreTareaPrecedente);
+
+                // Actualizar tarea en el arbol
+                actualizarNodoActual(arbolTareas, tareaActual->prioridad, tareaActual);
+
+                system("cls");
+                // Mostrar mensaje de exito
+                puts("\n========================================");
+                printf(" Se establece que la tarea %s\n", tareaActual->nombreTarea); 
+                printf(" tiene como precedente a la tarea %s\n",  tareaActual->tareaPrecedente);
+                puts("========================================\n");
+                break;
+            }
+
+            // Obtener siguiente tarea
+            parActual = nextTreeMap(arbolTareas);
+        }
+
+    }
+    else
+    {
+        system("cls");
+
+        // Mostrar mensaje de error
+        puts("\n========================================");
+        puts("    La tarea o el precedente no existe");
+        puts("========================================\n");
+    }
+    
+    system("pause");
+    
 }

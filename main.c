@@ -83,6 +83,19 @@ int main(int argc, const char * argv[])
 
             case 2:
                 system("cls");
+
+                puts("========================================");
+                puts("  Establecer precedencia entre tareas");   
+                puts("========================================\n");
+                
+                // Pedir nombre de la tarea 1
+                ingresarValor(auxiliar, "     Ingrese nombre de tarea 1");
+
+                // Pedir nombre de la tarea 2
+                ingresarValor(nombreTarea, "    Ingrese nombre de tarea 2 " );
+                
+                // Se llama a la funcion establecerPrecedencia
+                establecerPrecedencia(arbolTareas, mapaTareas, nombreTarea, auxiliar);
                 
                 break;
 

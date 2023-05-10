@@ -109,6 +109,11 @@ int main(int argc, const char * argv[])
 
             case 4:
                 system("cls");
+
+                // Pedir nombre de la tarea a marcar
+                ingresarValor(nombreTarea, "Ingrese el nombre de la tarea a completar");
+
+                marcarTareaCompletada(arbolTareas, mapaTareas, nombreTarea);
                 
                 break;
             

@@ -16,4 +16,6 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
 
 void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas);
 
+void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea);
+
 #endif /*   optionsMenu_h   */

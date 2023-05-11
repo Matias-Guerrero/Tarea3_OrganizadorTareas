@@ -171,3 +171,27 @@ Funciones Implementadas:
   Si se logra establecer la tarea precedente, se muestra un mensaje de éxito en pantalla con el nombre de la tarea y el nombre de su tarea precedente. En caso contrario, se muestra un mensaje de error indicando que la tarea o su precedente no existen.
 
   La función utiliza la función `system("cls")` para limpiar la pantalla y `system("pause")` para pausar la ejecución y esperar a que el usuario presione una tecla antes de continuar.
+  
+- **Opcion 3 :** `void mostrarTareasPrecedencia(char *nombreTarea, Map *mapaTareas, List *listaTareasPorHacer)`.
+
+  La función `mostrarTareasPrecedencia()` se encarga de mostrar las tareas por hacer, ordenadas por prioridad y precedencia en caso que existan. Recibe como argumentos un árbol de tareas (`arbolTareas`) y un mapa de tareas (`mapaTareas`).
+
+  Primero, se verifica que el árbol de tareas no esté vacío utilizando la función `firstTreeMap()`. Si el árbol está vacío, se muestra un mensaje de error en pantalla indicando que no hay tareas por hacer.
+
+  Si el árbol no está vacío, se crea una lista para almacenar las tareas por hacer. Se recorre el árbol de tareas utilizando un ciclo while y se obtiene la tarea actual mediante la función `firstTreeMap()`. Si la tarea actual no se ha completado aún, se verifica si tiene una tarea precedente utilizando la función `strcmp()`. Si tiene una tarea precedente, se llama a la función `mostrarTareasPrecedencia()` para mostrar la tarea precedente y sus tareas relacionadas. Luego, se agrega la tarea actual a la lista de tareas por hacer utilizando la función `pushBack()`.
+
+  Después de recorrer todo el árbol de tareas, se muestra en pantalla la lista de tareas por hacer. Se muestra un mensaje de éxito indicando que se van a mostrar las tareas por hacer y se recorre la lista de tareas por hacer utilizando un ciclo while. Para cada tarea por hacer, se muestra su nombre, prioridad y tarea precedente en caso que exista. Si tiene tarea precedente, se muestra también el nombre de la tarea precedente. Por último, se libera la memoria de la lista de tareas por hacer utilizando la función `free()`.
+
+  La función utiliza la función `system("cls")` para limpiar la pantalla y `system("pause")` para pausar la ejecución y esperar a que el usuario presione una tecla antes de continuar.
+  
+- **Opcion 4 :** `void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea)`.
+
+  La función `marcarTareaCompletada()` se encarga de eliminar una tarea del árbol y mapa de tareas si esta se ha completado. Recibe como argumentos un árbol de tareas (`arbolTareas`), un mapa de tareas (`mapaTareas`) y el nombre de la tarea que se desea eliminar (`nombreTarea`).
+
+  Primero, la función busca la tarea en el mapa de tareas (`mapaTareas`) utilizando la función `searchMap()`. Si la tarea existe, se crea una variable booleana `marcarTarea` para verificar si se quiere marcar la tarea como completada.
+
+  Luego, la función busca en el árbol de tareas (`arbolTareas`) si la tarea a eliminar es precedente de alguna otra tarea. Para ello, se utiliza un ciclo while que recorre cada tarea del árbol. Si la tarea a eliminar es precedente de alguna tarea, se muestra una advertencia al usuario preguntando si está seguro de querer eliminar la tarea. Si el usuario responde que si desea eliminar la tarea (`S o s`), se actualiza la tarea que tiene como precedente la tarea a eliminar para que no tenga relación con esta. Se actualiza la tarea en el mapa de tareas utilizando la función `insertMap()` y en el árbol de tareas mediante la función `actualizarNodoActual()`. En caso que el usuario no desea eliminar la tarea (`N o n`) la tarea no se marcará como completada.
+
+  Después se verifica si se quiere marcar la tarea como completada. Si se desea marcar la tarea, esta se elimina del mapa de tareas utilizando la función `eraseMap()` y se busca la tarea en el árbol de tareas utilizando la función `firstTreeMap()`. Se recorre el árbol de tareas con un ciclo while para encontrar la tarea a eliminar y eliminarla del árbol utilizando la función `eraseTreeMapCurrent()`.
+
+  Y por último, se muestra un mensaje de éxito en pantalla y se utiliza la función `system("pause")` para pausar la ejecución y esperar a que el usuario presione una tecla antes de continuar.

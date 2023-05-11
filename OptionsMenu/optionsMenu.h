@@ -18,4 +18,7 @@ void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas);
 
 void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea);
 
+// Funcion para rootear codigo
+void recorrerArbol(TreeMap *arbolTareas);
+
 #endif /*   optionsMenu_h   */

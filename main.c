@@ -131,7 +131,16 @@ int main(int argc, const char * argv[])
                 system("cls");
                 puts("Gracias por usar el programa :) Hasta luego!");
                 sleep(2);
-                break;  
+                break;
+
+            case 8:
+                system("cls");
+                puts("========================================");
+                puts("          Tareas Arbol Binario");
+                puts("========================================");
+                recorrerArbol(arbolTareas);
+                system("pause");
+                break;    
             
             default:
                 printf("\nOpcion no valida. Intente nuevamente.\n\n");

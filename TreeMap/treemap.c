@@ -51,70 +51,45 @@ TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
 }
 
 // Funcion actualizada
-void insertTreeMap(TreeMap * tree, void* key, void * value) {
-    if(tree == NULL) return;
+void insertTreeMap(TreeMap * tree, void * key, void * value) {
+    if (tree == NULL) return;
 
-    TreeNode* nodoActual = tree->root;
-    TreeNode* nuevoNodo = createTreeNode(key, value);
+    TreeNode * node = createTreeNode(key, value);
+    if (node == NULL) return;
 
-    if(nodoActual != NULL)
-    {
-        TreeNode* nodoPadre = NULL;
+    if (tree->root == NULL) {
+        tree->root = node;
+        return;
+    }
 
-        while(nodoActual != NULL)
-        {
-            nodoPadre = nodoActual;
+    TreeNode * current = tree->root;
+    TreeNode * parent = NULL;
 
-            if(is_equal(tree, nodoActual->pair->key, key))
-            {
-                if(nodoActual->left == NULL)
-                {
-                    nodoActual->left = nuevoNodo;
-                    nuevoNodo->parent = nodoActual;
-                    break;
-                }
-                else if(nodoActual->right == NULL)
-                {
-                    nodoActual->right = nuevoNodo;
-                    nuevoNodo->parent = nodoActual;
-                    break;
-                }
-                else
-                {
-                    nodoActual = nodoActual->left;
-                }
-            }
-            else if(tree->lower_than(key, nodoActual->pair->key))
-            {
-                nodoActual = nodoActual->left;
-            }
-            else
-            {
-                nodoActual = nodoActual->right;
-            }
-        }
+    while (current != NULL) {
+        parent = current;
 
-        if(nodoActual == NULL)
-        {
-            if(tree->lower_than(key, nodoPadre->pair->key))
-            {
-                nodoPadre->left = nuevoNodo;
-            }
-            else
-            {
-                nodoPadre->right = nuevoNodo;
-            }
-
-            nuevoNodo->parent = nodoPadre;
-            tree->current = nuevoNodo;
+        if (is_equal(tree, key, current->pair->key)) {
+            // Las claves son iguales, insertar en el subárbol izquierdo
+            current = current->left;
+        } else if (tree->lower_than(key, current->pair->key)) {
+            current = current->left;
+        } else {
+            current = current->right;
         }
     }
-    else
-    {
-        tree->root = nuevoNodo;
-        tree->current = nuevoNodo;
+
+    node->parent = parent;
+
+    if (is_equal(tree, key, parent->pair->key)) {
+        // Las claves son iguales, insertar en el subárbol izquierdo
+        parent->left = node;
+    } else if (tree->lower_than(key, parent->pair->key)) {
+        parent->left = node;
+    } else {
+        parent->right = node;
     }
 }
+
 
 TreeNode * minimum(TreeNode * x){
 
@@ -129,87 +104,81 @@ TreeNode * minimum(TreeNode * x){
 
 }
 
-
-void removeNode(TreeMap * tree, TreeNode* node) {
-
-    if(node->left == NULL && node->right == NULL)
-    {
-        if(node->parent == NULL)
-        {
-            tree->root = NULL;
-        }
-        else
-        {
-            if(node->parent->left == node)
-            {
-                node->parent->left = NULL;
-            }
-            else
-            {
-                node->parent->right = NULL;
-            }
-        }
-    }
-    else if(node->left == NULL)
-    {
-        if(node->parent == NULL)
-        {
-            tree->root = node->right;
-        }
-        else
-        {
-            if(node->parent->left == node)
-            {
-                node->parent->left = node->right;
-            }
-            else
-            {
-                node->parent->right = node->right;
-            }
-
-            node->right->parent = node->parent;
-        }
-    }
-    else if(node->right == NULL)
-    {
-        if(node->parent == NULL)
-        {
-            tree->root = node->left;
-        }
-        else
-        {
-            if(node->parent->left == node)
-            {
-                node->parent->left = node->left;
-            }
-            else
-            {
-                node->parent->right = node->left;
-            }
-
-            node->left->parent = node->parent;
-        }
-    }
-    else
-    {
-        TreeNode* min = minimum(node->right);
-
-        node->pair->key = min->pair->key;
-        node->pair->value = min->pair->value;
-
-        removeNode(tree, min);
-    }
-}
-
-void eraseTreeMap(TreeMap * tree, void* key){
+void eraseTreeMap(TreeMap * tree, void * key) {
     if (tree == NULL || tree->root == NULL) return;
 
-    if (searchTreeMap(tree, key) == NULL) return;
-    TreeNode* node = tree->current;
-    removeNode(tree, node);
+    // Buscar el nodo con la clave proporcionada
+    TreeNode * current = tree->root;
+    while (current != NULL) {
+        if (is_equal(tree, key, current->pair->key)) {
+            break;
+        } else if (tree->lower_than(key, current->pair->key)) {
+            current = current->left;
+        } else {
+            current = current->right;
+        }
+    }
 
+    if (current == NULL) {
+        // No se encontró el nodo con la clave proporcionada
+        return;
+    }
+
+    // Caso 1: El nodo a eliminar no tiene hijos
+    if (current->left == NULL && current->right == NULL) {
+        if (current->parent == NULL) {
+            // Eliminar el nodo raíz
+            free(current->pair);
+            free(current);
+            tree->root = NULL;
+        } else {
+            // Nodo interno, eliminar referencia del padre
+            if (current->parent->left == current) {
+                current->parent->left = NULL;
+            } else {
+                current->parent->right = NULL;
+            }
+            free(current->pair);
+            free(current);
+        }
+    }
+    // Caso 2: El nodo a eliminar tiene un hijo
+    else if (current->left == NULL || current->right == NULL) {
+        TreeNode * child;
+        if (current->left != NULL) {
+            child = current->left;
+        } else {
+            child = current->right;
+        }
+
+        if (current->parent == NULL) {
+            // Eliminar el nodo raíz con un solo hijo
+            free(current->pair);
+            free(current);
+            tree->root = child;
+            child->parent = NULL;
+        } else {
+            // Nodo interno con un solo hijo, actualizar referencias del padre y del hijo
+            if (current->parent->left == current) {
+                current->parent->left = child;
+            } else {
+                current->parent->right = child;
+            }
+            child->parent = current->parent;
+            free(current->pair);
+            free(current);
+        }
+    }
+    // Caso 3: El nodo a eliminar tiene dos hijos
+    else {
+        TreeNode* min = minimum(current->right);
+
+        current->pair->key = min->pair->key;
+        current->pair->value = min->pair->value;
+
+        eraseTreeMap(tree, min->pair->key);
+    }
 }
-
 
 Pair * searchTreeMap(TreeMap * tree, void* key) {
     if(tree == NULL || tree->root == NULL) return NULL;
@@ -277,125 +246,54 @@ Pair * upperBound(TreeMap * tree, void* key) {
 }
 
 Pair * firstTreeMap(TreeMap * tree) {
-    if(tree == NULL || tree->root == NULL) return NULL;
+    if (tree == NULL || tree->root == NULL) return NULL;
 
-    TreeNode* min = minimum(tree->root);
-
-    tree->current = min;
-
-    return min->pair;
-}
-
-Pair * nextTreeMap(TreeMap * tree){
-    if(tree == NULL || tree->root == NULL || tree->current == NULL) return NULL;
-    
-    TreeNode* nodoActual = tree->current;
-
-    if(nodoActual->right != NULL)
-    {
-        nodoActual = minimum(nodoActual->right);
-    }
-    else
-    {
-        TreeNode* nodoPadre = nodoActual->parent;
-
-        while(nodoPadre != NULL && nodoActual == nodoPadre->right)
-        {
-            nodoActual = nodoPadre;
-            nodoPadre = nodoPadre->parent;
-        }
-
-        if(nodoPadre == NULL)
-        {
-            return NULL;
-        }
-        else
-        {
-            nodoActual = nodoPadre;
-        }
+    // Encontrar el nodo más a la izquierda (el nodo más pequeño)
+    TreeNode * current = tree->root;
+    while (current->left != NULL) {
+        current = current->left;
     }
 
-    tree->current = nodoActual;
+    // Establecer el nodo actual en el árbol
+    tree->current = current;
 
-    return tree->current->pair;
+    // Devolver el par clave-valor del nodo actual
+    return current->pair;
 }
+
+Pair * nextTreeMap(TreeMap * tree) {
+    if (tree == NULL || tree->current == NULL) return NULL;
+
+    // Si el nodo actual tiene un hijo derecho, encontrar el nodo más a la izquierda en ese subárbol
+    if (tree->current->right != NULL) {
+        TreeNode * current = tree->current->right;
+        while (current->left != NULL) {
+            current = current->left;
+        }
+        tree->current = current;
+        return current->pair;
+    }
+
+    // Si el nodo actual no tiene un hijo derecho, encontrar el primer ancestro ascendente que sea un hijo izquierdo
+    TreeNode * current = tree->current;
+    TreeNode * parent = current->parent;
+    while (parent != NULL && current == parent->right) {
+        current = parent;
+        parent = parent->parent;
+    }
+    tree->current = parent;
+
+    // Devolver el par clave-valor del nodo actual
+    if (parent != NULL) {
+        return parent->pair;
+    } else {
+        // Se ha alcanzado el final del árbol
+        return NULL;
+    }
+}
+
 
 // Nuevas funciones:
-
-// Funcion para eliminar el nodo del current del arbol
-void removerNodoActual(TreeMap * tree) {
-    if(tree == NULL || tree->root == NULL) return;
-
-    TreeNode* nodoActual = tree->current;
-
-    if(nodoActual->left == NULL && nodoActual->right == NULL)
-    {
-        if(nodoActual->parent == NULL)
-        {
-            tree->root = NULL;
-        }
-        else
-        {
-            if(nodoActual->parent->left == nodoActual)
-            {
-                nodoActual->parent->left = NULL;
-            }
-            else
-            {
-                nodoActual->parent->right = NULL;
-            }
-        }
-    }
-    else if(nodoActual->left == NULL)
-    {
-        if(nodoActual->parent == NULL)
-        {
-            tree->root = nodoActual->right;
-        }
-        else
-        {
-            if(nodoActual->parent->left == nodoActual)
-            {
-                nodoActual->parent->left = nodoActual->right;
-            }
-            else
-            {
-                nodoActual->parent->right = nodoActual->right;
-            }
-
-            nodoActual->right->parent = nodoActual->parent;
-        }
-    }
-    else if(nodoActual->right == NULL)
-    {
-        if(nodoActual->parent == NULL)
-        {
-            tree->root = nodoActual->left;
-        }
-        else
-        {
-            if(nodoActual->parent->left == nodoActual)
-            {
-                nodoActual->parent->left = nodoActual->left;
-            }
-            else
-            {
-                nodoActual->parent->right = nodoActual->left;
-            }
-
-            nodoActual->left->parent = nodoActual->parent;
-        }
-    }
-    else
-    {
-        TreeNode* min = minimum(nodoActual->right);
-
-        nodoActual->pair->key = min->pair->key;
-        nodoActual->pair->value = min->pair->value;
-
-        removeNode(tree, min);
-    }
-}
 
 // Actualizar el nodo actual del arbol con el nodo que se pasa por parametro
 void actualizarNodoActual(TreeMap * tree, void* key, void* value) {
@@ -403,6 +301,78 @@ void actualizarNodoActual(TreeMap * tree, void* key, void* value) {
 
     TreeNode* nodoActual = tree->current;
 
-    nodoActual->pair->key = key;
     nodoActual->pair->value = value;
+}
+
+// Funcion para eliminar el nodo del current del arbol
+void eraseTreeMapCurrent(TreeMap * tree) {
+    if (tree == NULL || tree->root == NULL || tree->current == NULL) return;
+
+    TreeNode * current = tree->current;
+
+    // Caso 1: El nodo actual no tiene hijos
+    if (current->left == NULL && current->right == NULL) {
+        if (current->parent == NULL) {
+            // Eliminar el nodo raíz
+            free(current->pair);
+            free(current);
+            tree->root = NULL;
+        } else {
+            // Nodo interno, eliminar referencia del padre
+            if (current->parent->left == current) {
+                current->parent->left = NULL;
+            } else {
+                current->parent->right = NULL;
+            }
+            free(current->pair);
+            free(current);
+        }
+    }
+    // Caso 2: El nodo actual tiene un hijo
+    else if (current->left == NULL || current->right == NULL) {
+        TreeNode * child;
+        if (current->left != NULL) {
+            child = current->left;
+        } else {
+            child = current->right;
+        }
+
+        if (current->parent == NULL) {
+            // Eliminar el nodo raíz con un solo hijo
+            free(current->pair);
+            free(current);
+            tree->root = child;
+            child->parent = NULL;
+        } else {
+            // Nodo interno con un solo hijo, actualizar referencias del padre y del hijo
+            if (current->parent->left == current) {
+                current->parent->left = child;
+            } else {
+                current->parent->right = child;
+            }
+            child->parent = current->parent;
+            free(current->pair);
+            free(current);
+        }
+    }
+    // Caso 3: El nodo actual tiene dos hijos
+    else {
+        TreeNode* min = minimum(current->right);
+
+        current->pair->key = min->pair->key;
+        current->pair->value = min->pair->value;
+
+        eraseTreeMap(tree, min->pair->key);
+    }
+
+    tree->current = NULL;
+}
+
+// Funcion para obtener el nodo del raiz del arbol
+Pair* obtenerNodoRaiz(TreeMap * tree) {
+    if(tree == NULL || tree->root == NULL) return NULL;
+
+    TreeNode* nodoActual = tree->root;
+
+    return nodoActual->pair;
 }

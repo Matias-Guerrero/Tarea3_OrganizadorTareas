@@ -12,7 +12,7 @@ TreeMap * createTreeMap(int (*lower_than_int) (void* key1, void* key2));
 
 void insertTreeMap(TreeMap * tree, void* key, void * value); // Funcion actualizada
 
-void eraseTreeMap(TreeMap * tree, void* key);
+void eraseTreeMap(TreeMap * tree, void * key);
 
 Pair * searchTreeMap(TreeMap * tree, void* key);
 
@@ -23,8 +23,11 @@ Pair * firstTreeMap(TreeMap * tree);
 Pair * nextTreeMap(TreeMap * tree);
 
 // Nuevas funciones
-void removerNodoActual(TreeMap * tree);
 
 void actualizarNodoActual(TreeMap * tree, void* key, void * value);
+
+void eraseTreeMapCurrent(TreeMap * tree);
+
+Pair* obtenerNodoRaiz(TreeMap * tree);
 
 #endif /* TREEMAP_h */

@@ -14,9 +14,9 @@ Organizador de tareas implementado con las TDA árbol binario y lista.
 *   Para ejecutar el codigo se creo un script `compiler.sh` y así crear un archivo `.exe`.
 
 ---
-En esta aplicacion implementamos las siguientes TDAs: 
+En esta aplicacion implementamos las siguientes estructuras de datos y TDAs: 
 
-* TDA Arbol binario:
+* Estructura de datos Arbol binario:
 
   ````c
   typedef struct TreeNode TreeNode;
@@ -172,13 +172,13 @@ Funciones Implementadas:
 
   La función utiliza la función `system("cls")` para limpiar la pantalla y `system("pause")` para pausar la ejecución y esperar a que el usuario presione una tecla antes de continuar.
   
-- **Opcion 3 :** `void mostrarTareasPrecedencia(char *nombreTarea, Map *mapaTareas, List *listaTareasPorHacer)`.
+- **Opcion 3 :** `void mostrarTareasPorHacer(char *nombreTarea, Map *mapaTareas, List *listaTareasPorHacer)`.
 
-  La función `mostrarTareasPrecedencia()` se encarga de mostrar las tareas por hacer, ordenadas por prioridad y precedencia en caso que existan. Recibe como argumentos un árbol de tareas (`arbolTareas`) y un mapa de tareas (`mapaTareas`).
+  La función `mostrarTareasPorHacer()` se encarga de mostrar las tareas por hacer, ordenadas por prioridad y precedencia en caso que existan. Recibe como argumentos un árbol de tareas (`arbolTareas`) y un mapa de tareas (`mapaTareas`).
 
   Primero, se verifica que el árbol de tareas no esté vacío utilizando la función `firstTreeMap()`. Si el árbol está vacío, se muestra un mensaje de error en pantalla indicando que no hay tareas por hacer.
 
-  Si el árbol no está vacío, se crea una lista para almacenar las tareas por hacer. Se recorre el árbol de tareas utilizando un ciclo while y se obtiene la tarea actual mediante la función `firstTreeMap()`. Si la tarea actual no se ha completado aún, se verifica si tiene una tarea precedente utilizando la función `strcmp()`. Si tiene una tarea precedente, se llama a la función `mostrarTareasPrecedencia()` para mostrar la tarea precedente y sus tareas relacionadas. Luego, se agrega la tarea actual a la lista de tareas por hacer utilizando la función `pushBack()`.
+  Si el árbol no está vacío, se crea una lista para almacenar las tareas por hacer. Se recorre el árbol de tareas utilizando un ciclo while y se obtiene la tarea actual mediante la función `firstTreeMap()`. Si la tarea actual no se ha completado aún, se verifica si tiene una tarea precedente utilizando la función `strcmp()`. Si tiene una tarea precedente, se llama a la función `mostrarTareasPorHacer()` para mostrar la tarea precedente y sus tareas relacionadas. Luego, se agrega la tarea actual a la lista de tareas por hacer utilizando la función `pushBack()`.
 
   Después de recorrer todo el árbol de tareas, se muestra en pantalla la lista de tareas por hacer. Se muestra un mensaje de éxito indicando que se van a mostrar las tareas por hacer y se recorre la lista de tareas por hacer utilizando un ciclo while. Para cada tarea por hacer, se muestra su nombre, prioridad y tarea precedente en caso que exista. Si tiene tarea precedente, se muestra también el nombre de la tarea precedente. Por último, se libera la memoria de la lista de tareas por hacer utilizando la función `free()`.
 

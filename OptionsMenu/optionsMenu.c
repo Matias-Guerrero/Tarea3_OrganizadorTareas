@@ -20,8 +20,8 @@ void mostrarMenu()
     puts("=======================================================");
     puts("1. Agregar tarea");
     puts("2. Establecer precedencia entre tareas"); 
-    puts("3. Mostrar tareas por hacer"); //  Revision
-    puts("4. Marcar tarea como completada");
+    puts("3. Mostrar tareas por hacer"); // Sin implementar
+    puts("4. Marcar tarea como completada"); // Sin implementar
     puts("5. Deshacer ultima accion"); // Sin implementar
     puts("6. Cargar datos de tareas desde un archivo de texto"); // Sin implementar
     puts("7. Salir");

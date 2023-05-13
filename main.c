@@ -88,11 +88,13 @@ int main(int argc, const char * argv[])
                 puts("  Establecer precedencia entre tareas");   
                 puts("========================================\n");
                 
-                // Pedir nombre de la tarea 1
-                ingresarValor(auxiliar, "     Ingrese nombre de tarea 1");
+                // Pedir nombre de tarea precedente 
+                ingresarValor(auxiliar, "   Establecer tarea ");
 
-                // Pedir nombre de la tarea 2
-                ingresarValor(nombreTarea, "    Ingrese nombre de tarea 2 " );
+                puts("");
+
+                // Pedir nombre de tarea a preceder
+                ingresarValor(nombreTarea, "    Como precedente de " );
                 
                 // Se llama a la funcion establecerPrecedencia
                 establecerPrecedencia(arbolTareas, mapaTareas, nombreTarea, auxiliar);
@@ -103,7 +105,7 @@ int main(int argc, const char * argv[])
                 system("cls");
 
                 // Se llama a la funcion mostrarTareasPorHacer
-                mostrarTareasPorHacer(arbolTareas, mapaTareas);
+                //mostrarTareasPorHacer(arbolTareas, mapaTareas);
                 
                 break;  
 
@@ -111,9 +113,9 @@ int main(int argc, const char * argv[])
                 system("cls");
 
                 // Pedir nombre de la tarea a marcar
-                ingresarValor(nombreTarea, "Ingrese el nombre de la tarea a completar");
+                //ingresarValor(nombreTarea, "Ingrese el nombre de la tarea a completar");
 
-                marcarTareaCompletada(arbolTareas, mapaTareas, nombreTarea);
+                //marcarTareaCompletada(arbolTareas, mapaTareas, nombreTarea);
                 
                 break;
             

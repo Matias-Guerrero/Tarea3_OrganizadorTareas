@@ -3,8 +3,11 @@
 #include <string.h>
 #include "treemap.h"
 
-typedef struct TreeNode TreeNode;
+//==============================================================================
+// DEFINICION Y CREACION DE ESTRUCTURAS
+//==============================================================================
 
+typedef struct TreeNode TreeNode;
 
 struct TreeNode {
     Pair* pair;
@@ -24,7 +27,6 @@ int is_equal(TreeMap* tree, void* key1, void* key2){
         tree->lower_than(key2,key1)==0) return 1;
     else return 0;
 }
-
 
 TreeNode * createTreeNode(void* key, void * value) {
     TreeNode * new = (TreeNode *)malloc(sizeof(TreeNode));
@@ -49,6 +51,10 @@ TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
     //new->lower_than = lower_than;
     return NULL;
 }
+
+//==============================================================================
+// INSERCION
+//==============================================================================
 
 // Funcion actualizada
 void insertTreeMap(TreeMap * tree, void * key, void * value) {
@@ -90,6 +96,9 @@ void insertTreeMap(TreeMap * tree, void * key, void * value) {
     }
 }
 
+//==============================================================================
+// ELIMINACION
+//==============================================================================
 
 TreeNode * minimum(TreeNode * x){
 
@@ -104,6 +113,7 @@ TreeNode * minimum(TreeNode * x){
 
 }
 
+// Funcion actualizada
 void eraseTreeMap(TreeMap * tree, void * key) {
     if (tree == NULL || tree->root == NULL) return;
 
@@ -180,130 +190,6 @@ void eraseTreeMap(TreeMap * tree, void * key) {
     }
 }
 
-Pair * searchTreeMap(TreeMap * tree, void* key) {
-    if(tree == NULL || tree->root == NULL) return NULL;
-
-    TreeNode* nodoActual = tree->root;
-
-    while(nodoActual != NULL){
-
-        if(is_equal(tree, nodoActual->pair->key, key))
-        {
-            tree->current = nodoActual;
-            return nodoActual->pair;
-        }
-        else if(tree->lower_than(key, nodoActual->pair->key))
-        {
-            nodoActual = nodoActual->left;
-        }
-        else
-        {
-            nodoActual = nodoActual->right;
-        }
-    }
-
-    return NULL;
-}
-
-
-Pair * upperBound(TreeMap * tree, void* key) {
-    if(tree == NULL || tree->root == NULL) return NULL;
-
-    if(searchTreeMap(tree, key) != NULL)
-    {
-        return tree->current->pair;
-    }
-    else
-    {
-        TreeNode* nodoActual = tree->root;
-        TreeNode* nodoAuxiliar = nodoActual;
-
-        while(nodoActual != NULL)
-        {
-            if(tree->lower_than(key, nodoActual->pair->key))
-            {
-                nodoAuxiliar = nodoActual;
-            }
-
-            if(tree->lower_than(key, nodoActual->pair->key))
-            {
-                nodoActual = nodoActual->left;
-            }
-            else
-            {
-                nodoActual = nodoActual->right;
-            }
-        }
-
-        if(tree->lower_than(nodoAuxiliar->pair->key, key))
-        {
-            return NULL;
-        }
-
-        return nodoAuxiliar->pair;
-    }
-
-}
-
-Pair * firstTreeMap(TreeMap * tree) {
-    if (tree == NULL || tree->root == NULL) return NULL;
-
-    // Encontrar el nodo más a la izquierda (el nodo más pequeño)
-    TreeNode * current = tree->root;
-    while (current->left != NULL) {
-        current = current->left;
-    }
-
-    // Establecer el nodo actual en el árbol
-    tree->current = current;
-
-    // Devolver el par clave-valor del nodo actual
-    return current->pair;
-}
-
-Pair * nextTreeMap(TreeMap * tree) {
-    if (tree == NULL || tree->current == NULL) return NULL;
-
-    // Si el nodo actual tiene un hijo derecho, encontrar el nodo más a la izquierda en ese subárbol
-    if (tree->current->right != NULL) {
-        TreeNode * current = tree->current->right;
-        while (current->left != NULL) {
-            current = current->left;
-        }
-        tree->current = current;
-        return current->pair;
-    }
-
-    // Si el nodo actual no tiene un hijo derecho, encontrar el primer ancestro ascendente que sea un hijo izquierdo
-    TreeNode * current = tree->current;
-    TreeNode * parent = current->parent;
-    while (parent != NULL && current == parent->right) {
-        current = parent;
-        parent = parent->parent;
-    }
-    tree->current = parent;
-
-    // Devolver el par clave-valor del nodo actual
-    if (parent != NULL) {
-        return parent->pair;
-    } else {
-        // Se ha alcanzado el final del árbol
-        return NULL;
-    }
-}
-
-
-// Nuevas funciones:
-
-// Actualizar el nodo actual del arbol con el nodo que se pasa por parametro
-void actualizarNodoActual(TreeMap * tree, void* key, void* value) {
-    if(tree == NULL || tree->root == NULL) return;
-
-    TreeNode* nodoActual = tree->current;
-
-    nodoActual->pair->value = value;
-}
-
 // Funcion para eliminar el nodo del current del arbol
 void eraseTreeMapCurrent(TreeMap * tree) {
     if (tree == NULL || tree->root == NULL || tree->current == NULL) return;
@@ -367,6 +253,64 @@ void eraseTreeMapCurrent(TreeMap * tree) {
 
     tree->current = NULL;
 }
+
+//==============================================================================
+// BUSQUEDA
+//==============================================================================
+
+// Funcion actualizada
+Pair * firstTreeMap(TreeMap * tree) {
+    if (tree == NULL || tree->root == NULL) return NULL;
+
+    // Encontrar el nodo más a la izquierda (el nodo más pequeño)
+    TreeNode * current = tree->root;
+    while (current->left != NULL) {
+        current = current->left;
+    }
+
+    // Establecer el nodo actual en el árbol
+    tree->current = current;
+
+    // Devolver el par clave-valor del nodo actual
+    return current->pair;
+}
+
+// Funcion actualizada
+Pair * nextTreeMap(TreeMap * tree) {
+    if (tree == NULL || tree->current == NULL) return NULL;
+
+    // Si el nodo actual tiene un hijo derecho, encontrar el nodo más a la izquierda en ese subárbol
+    if (tree->current->right != NULL) {
+        TreeNode * current = tree->current->right;
+        while (current->left != NULL) {
+            current = current->left;
+        }
+        tree->current = current;
+        return current->pair;
+    }
+
+    // Si el nodo actual no tiene un hijo derecho, encontrar el primer ancestro ascendente que sea un hijo izquierdo
+    TreeNode * current = tree->current;
+    TreeNode * parent = current->parent;
+    while (parent != NULL && current == parent->right) {
+        current = parent;
+        parent = parent->parent;
+    }
+    tree->current = parent;
+
+    // Devolver el par clave-valor del nodo actual
+    if (parent != NULL) {
+        return parent->pair;
+    } else {
+        // Se ha alcanzado el final del árbol
+        return NULL;
+    }
+}
+
+
+//====================================================================================================
+// Funciones para rootear:
+//====================================================================================================
 
 // Funcion para obtener el nodo del raiz del arbol
 Pair* obtenerNodoRaiz(TreeMap * tree) {

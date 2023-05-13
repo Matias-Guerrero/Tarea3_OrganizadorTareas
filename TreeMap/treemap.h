@@ -1,6 +1,10 @@
 #ifndef TREEMAP_h
 #define TREEMAP_h
 
+//==============================================================================
+// DEFINICION Y CREACION DE ESTRUCTURAS
+//==============================================================================
+
 typedef struct TreeMap TreeMap;
 
 typedef struct Pair {
@@ -10,23 +14,31 @@ typedef struct Pair {
 
 TreeMap * createTreeMap(int (*lower_than_int) (void* key1, void* key2));
 
+//==============================================================================
+// INSERCION
+//==============================================================================
+
 void insertTreeMap(TreeMap * tree, void* key, void * value); // Funcion actualizada
 
-void eraseTreeMap(TreeMap * tree, void * key);
+//==============================================================================
+// ELIMINACION
+//==============================================================================
 
-Pair * searchTreeMap(TreeMap * tree, void* key);
+void eraseTreeMap(TreeMap * tree, void * key); // Funcion actualizada
 
-Pair * upperBound(TreeMap * tree, void* key);
+void eraseTreeMapCurrent(TreeMap * tree); // Funcion nueva
 
-Pair * firstTreeMap(TreeMap * tree);
+//==============================================================================
+// BUSQUEDA
+//==============================================================================
 
-Pair * nextTreeMap(TreeMap * tree);
+Pair * firstTreeMap(TreeMap * tree); // Funcion actualizada
 
-// Nuevas funciones
+Pair * nextTreeMap(TreeMap * tree); // Funcion actualizada
 
-void actualizarNodoActual(TreeMap * tree, void* key, void * value);
-
-void eraseTreeMapCurrent(TreeMap * tree);
+//==============================================================================
+// OTRAS FUNCIONES
+//==============================================================================
 
 Pair* obtenerNodoRaiz(TreeMap * tree);
 

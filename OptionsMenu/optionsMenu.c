@@ -49,7 +49,7 @@ void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int 
         // Asignar valores a la tarea
         strcpy(tarea->nombreTarea, nombreTarea);
         tarea->prioridad = prioridadTarea;
-        // strcpy(tarea->tareaPrecedente, "");
+        tarea->tareasPrecedentes = createList();
 
         // Agregar tarea al arbol y al mapa
         insertTreeMap(arbolTareas, (void *)tarea->prioridad, (void *)tarea);

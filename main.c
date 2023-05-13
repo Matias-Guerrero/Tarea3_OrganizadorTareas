@@ -137,10 +137,7 @@ int main(int argc, const char * argv[])
 
             case 8:
                 system("cls");
-                puts("========================================");
-                puts("          Tareas Arbol Binario");
-                puts("========================================");
-                recorrerArbol(arbolTareas);
+                recorrerArbolyMapa(arbolTareas, mapaTareas);
                 system("pause");
                 break;    
             

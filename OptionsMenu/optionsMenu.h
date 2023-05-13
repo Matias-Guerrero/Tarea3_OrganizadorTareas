@@ -12,11 +12,11 @@ void ingresarValor(char *valor, char *mensaje);
 
 void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea);
 
-void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente);
+// void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente);
 
-void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas);
+// void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas);
 
-void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea);
+// void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea);
 
 // Funcion para rootear codigo
 void recorrerArbol(TreeMap *arbolTareas);

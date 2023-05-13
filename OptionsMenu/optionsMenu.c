@@ -74,47 +74,44 @@ void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int 
 }
 
 // Funcion para establecer precedencia entre tareas
-// void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente)
-// {
-//     // Verificar que ambas tareas existan
-//     if (searchMap(mapaTareas, nombreTarea) != NULL && searchMap(mapaTareas, nombreTareaPrecedente) != NULL)
-//     {
-//         // Buscar tarea en el arbol
-//         Pair *current = firstTreeMap(arbolTareas);
+void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente)
+{
+    // Verificar que ambas tareas existan
+    if (searchMap(mapaTareas, nombreTarea) != NULL && searchMap(mapaTareas, nombreTareaPrecedente) != NULL)
+    {
+        // Buscar tarea en el arbol
+        Pair *current = firstTreeMap(arbolTareas);
 
-//         while (current != NULL)
-//         {
-//             Tarea *tareaActual = (Tarea *)current->value;
+        while (current != NULL)
+        {
+            Tarea *tareaActual = (Tarea *)current->value;
 
-//             if (strcmp(tareaActual->nombreTarea, nombreTarea) == 0)
-//             {
-//                 // Asignar tarea precedente
-//                 strcpy(tareaActual->tareaPrecedente, nombreTareaPrecedente);
+            if (strcmp(tareaActual->nombreTarea, nombreTarea) == 0)
+            {
+                Tarea *tareaPrecedente = searchMap(mapaTareas, nombreTareaPrecedente);
 
-//                 system("cls");
-//                 // Mostrar mensaje de exito
-//                 puts("\n========================================");
-//                 printf(" Se establece que la tarea %s\n", tareaActual->nombreTarea); 
-//                 printf(" tiene como precedente a la tarea %s\n", tareaActual->tareaPrecedente);
-//                 puts("========================================\n");
+                // Asignar tarea precedente a la lista de precedentes
+                pushBack(tareaActual->tareasPrecedentes, tareaPrecedente);
 
-//                 break;
-//             }
-//             // Avanzar al siguiente par en el árbol
-//             current = nextTreeMap(arbolTareas);
-//         }
-//     }
-//     else
-//     {
-//         system("cls");
-//         // Mostrar mensaje de error
-//         puts("\n========================================");
-//         puts("    La tarea o el precedente no existe");
-//         puts("========================================\n");
-//     }
+                system("cls");
+                
+                // Mostrar mensaje de exito
+                puts("\n==================================================");
+                printf("    Se establecio que => %s\n", tareaActual->nombreTarea);
+                printf("    Tiene como precedente => %s\n", nombreTareaPrecedente);
+                puts("========================================\n");
 
-//     system("pause");
-// }
+                system("pause");
+
+                break;
+            }
+
+            // Avanzar al siguiente par en el árbol
+            current = nextTreeMap(arbolTareas);
+        }
+    }
+        
+}
 
 
 // Funcion para buscar en una lista

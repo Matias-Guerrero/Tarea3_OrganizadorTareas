@@ -113,9 +113,9 @@ int main(int argc, const char * argv[])
                 system("cls");
 
                 // Pedir nombre de la tarea a marcar
-                //ingresarValor(nombreTarea, "Ingrese el nombre de la tarea a completar");
+                ingresarValor(nombreTarea, "Ingrese el nombre de la tarea a completar");
 
-                //marcarTareaCompletada(arbolTareas, mapaTareas, nombreTarea);
+                marcarTareaCompletada(arbolTareas, mapaTareas, nombreTarea);
                 
                 break;
             

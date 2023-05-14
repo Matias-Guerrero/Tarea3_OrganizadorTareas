@@ -42,7 +42,7 @@ void mostrarMenu()
     puts("1. Agregar tarea");
     puts("2. Establecer precedencia entre tareas"); 
     puts("3. Mostrar tareas por hacer");
-    puts("4. Marcar tarea como completada"); // Sin implementar
+    puts("4. Marcar tarea como completada"); 
     puts("5. Deshacer ultima accion"); // Sin implementar
     puts("6. Cargar datos de tareas desde un archivo de texto"); // Sin implementar
     puts("7. Salir");
@@ -306,105 +306,125 @@ void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas)
     free(listaTareasPorHacer);
 }
 
-// void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea)
-// {
-//     // Buscar tarea en el mapa
-//     Tarea *tareaActual = (Tarea *) searchMap(mapaTareas, nombreTarea);
+void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea)
+{
+    // Buscar tarea en el mapa
+    Tarea *tareaActual = (Tarea *) searchMap(mapaTareas, nombreTarea);
 
-//     // Se crea un booleano para verificar si se quiere marcar como completada una tarea
-//     bool marcarTarea = true;
+    // Booleano para ver si existe relacion de precedencia
+    bool precedencia = false;
 
-//     // Verificar si la tarea existe
-//     if(tareaActual != NULL)
-//     {
-//         // Buscar si la tarea a eliminar es precedente de otra tarea
-//         Pair *parActual = firstTreeMap(arbolTareas);
+    // Respuesta del usuario
+    char respuesta[2];
 
-//         // Se recorre el arbol para verificar si la tarea a eliminar es precedente de otra tarea
-//         while(parActual != NULL)
-//         {
-//             // Obtener tarea actual
-//             Tarea *tareaConPrecedente = (Tarea *)parActual->value;
+    // Verificar si la tarea existe
+    if(tareaActual != NULL)
+    {
+        // Buscar si la tarea a eliminar es precedente de otra tarea
+        Pair *parActual = firstTreeMap(arbolTareas);
 
-//             // Verificar si la tarea actual tiene relacion de precedencia con la tarea a eliminar
-//             if(strcmp(tareaConPrecedente->tareaPrecedente, nombreTarea) == 0)
-//             {
-//                 // Se muestra una advertencia
-//                 puts("\nEstas seguro que desea eliminar la tarea (S/N) " );
-//                 char respuesta[2];
-//                 scanf("%s", respuesta);
-//                 while(getchar() != '\n');
+        // Se recorre el arbol para verificar si la tarea a eliminar es precedente de otra tarea
+        while(parActual != NULL)
+        {
+            // Obtener tarea actual
+            Tarea *tareaActual = (Tarea *)parActual->value;
 
-//                 // Se verifica la respuesta
-//                 if(strcmp(respuesta, "S") == 0 || strcmp(respuesta, "s") == 0)
-//                 {
-//                     // Se actualiza la tarea con precedente para que no tenga relacion con la tarea a eliminar
-//                     strcpy(tareaConPrecedente->tareaPrecedente, "");
+            // Verificar si la tarea actual tiene tareas precedentes
+            if(firstList(tareaActual->tareasPrecedentes) != NULL)
+            {
+                // Buscar tarea actual en la lista de tareas precedentes
+                Tarea *tareaPrecedente = firstList(tareaActual->tareasPrecedentes);
 
-//                     // Se actualiza la tarea en el mapa
-//                     insertMap(mapaTareas, tareaConPrecedente->nombreTarea, tareaConPrecedente);
+                while(tareaPrecedente != NULL)
+                {
+                    // Verificar si la tarea actual es precedente de la tarea a eliminar
+                    if(strcmp(tareaPrecedente->nombreTarea, nombreTarea) == 0)
+                    {
+                        if(precedencia == false)
+                        {
+                            // Se muestra una advertencia
+                            puts("\nEstas seguro que desea eliminar la tarea (S/N) " );
+                            scanf("%s", respuesta);
+                            while(getchar() != '\n');
+                        }
 
-//                     // Se actualiza la tarea en el arbol
-//                     actualizarNodoActual(arbolTareas, (void *)tareaConPrecedente->nombreTarea, (void *)tareaConPrecedente);
+                        // Se verifica la respuesta
+                        if(strcmp(respuesta, "S") == 0 || strcmp(respuesta, "s") == 0)
+                        {
+                            // Se elimina la tarea de la lista de precedentes
+                            popCurrent(tareaActual->tareasPrecedentes);
 
-//                 }
-//                 else if(strcmp(respuesta, "N") == 0  || strcmp(respuesta, "n") == 0) // Se verifica la respuesta
-//                 {
-//                     // Se cambia el valor del booleano
-//                     marcarTarea = false;
-//                 }
-//             }
-//             // Obtener siguiente tarea
-//             parActual = nextTreeMap(arbolTareas);
-//         }
-        
-//         // Verificar si se quiere marcar la tarea como completada
-//         if(marcarTarea)
-//         {
-//             // Se elimina la tarea del mapa
-//             eraseMap(mapaTareas, nombreTarea);
+                            precedencia = true;
 
-//             // Buscar la tarea a eliminar en el arbol
-//             parActual = firstTreeMap(arbolTareas);
+                        }
+                        else if(strcmp(respuesta, "N") == 0 || strcmp(respuesta, "n") == 0) // Se verifica la respuesta
+                        {
+                            // Mensaje indicado que no se elimino la tarea
+                            puts("\n===============================");
+                            puts("    No se elimino la tarea");
+                            puts("===============================");
 
-//             // Se recorre el arbol para eliminar la tarea
-//             while(parActual != NULL)
-//             {
-//                 // Obtener tarea actual
-//                 Tarea *tareaActual = (Tarea *)parActual->value;
+                            system("pause");
 
-//                 // Verificar si la tarea actual es la que se busca
-//                 if(strcmp(tareaActual->nombreTarea, nombreTarea) == 0)
-//                 {
-//                     // Eliminar tarea del arbol
-//                     eraseTreeMapCurrent(arbolTareas);
-//                     break;
-//                 }
+                            return;
+                        }
+                        
+                    }
 
-//                 // Obtener siguiente tarea
-//                 parActual = nextTreeMap(arbolTareas);
-//             }
+                    // Obtener siguiente tarea
+                    tareaPrecedente = nextList(tareaActual->tareasPrecedentes);
+                }
+            }
 
-//             // Mostrar mensaje de exito
-//             puts("\n========================================");
-//             printf("        Tarea %s completada\n", nombreTarea);
-//             puts("========================================\n");
+            // Avanzar al siguiente par en el árbol
+            parActual = nextTreeMap(arbolTareas);
+        }
 
-//         }
-        
-//     }
-//     else
-//     {
-//         system("cls");
+        // Se elimina la tarea del mapa
+        eraseMap(mapaTareas, nombreTarea);
 
-//         // Mostrar mensaje de error
-//         puts("\n========================================");
-//         puts("        La tarea no existe");
-//         puts("========================================\n");
-//     }
+        // Recorrer el arbol para eliminar la tarea
+        parActual = firstTreeMap(arbolTareas);
 
-//     system("pause");
-// }
+        while(parActual != NULL)
+        {
+            // Obtener tarea actual
+            Tarea *tareaActual = (Tarea *)parActual->value;
+
+            // Verificar si la tarea actual es la tarea a eliminar
+            if(strcmp(tareaActual->nombreTarea, nombreTarea) == 0)
+            {
+                // Se elimina la tarea del arbol
+                eraseTreeMapCurrent(arbolTareas);
+
+                // Se libera la memoria de la tarea
+                free(tareaActual);
+
+                break;
+            }
+            
+            // Avanzar al siguiente par en el árbol
+            parActual = nextTreeMap(arbolTareas);
+        }
+
+        // Se muestra un mensaje de exito
+        puts("\n========================================");
+        puts("        Tarea completada con exito");
+        puts("========================================\n");
+
+        system("pause");
+    }
+    else
+    {
+        // Se muestra un mensaje de error
+        puts("\n========================================");
+        puts("        La tarea no existe");
+        puts("========================================\n");
+
+        system("pause");
+    }
+}
+
 
 //====================================================================================================
 // Funcion Utilizada para rootear el codigo

@@ -113,82 +113,6 @@ TreeNode * minimum(TreeNode * x){
 
 }
 
-// Funcion actualizada
-void eraseTreeMap(TreeMap * tree, void * key) {
-    if (tree == NULL || tree->root == NULL) return;
-
-    // Buscar el nodo con la clave proporcionada
-    TreeNode * current = tree->root;
-    while (current != NULL) {
-        if (is_equal(tree, key, current->pair->key)) {
-            break;
-        } else if (tree->lower_than(key, current->pair->key)) {
-            current = current->left;
-        } else {
-            current = current->right;
-        }
-    }
-
-    if (current == NULL) {
-        // No se encontró el nodo con la clave proporcionada
-        return;
-    }
-
-    // Caso 1: El nodo a eliminar no tiene hijos
-    if (current->left == NULL && current->right == NULL) {
-        if (current->parent == NULL) {
-            // Eliminar el nodo raíz
-            free(current->pair);
-            free(current);
-            tree->root = NULL;
-        } else {
-            // Nodo interno, eliminar referencia del padre
-            if (current->parent->left == current) {
-                current->parent->left = NULL;
-            } else {
-                current->parent->right = NULL;
-            }
-            free(current->pair);
-            free(current);
-        }
-    }
-    // Caso 2: El nodo a eliminar tiene un hijo
-    else if (current->left == NULL || current->right == NULL) {
-        TreeNode * child;
-        if (current->left != NULL) {
-            child = current->left;
-        } else {
-            child = current->right;
-        }
-
-        if (current->parent == NULL) {
-            // Eliminar el nodo raíz con un solo hijo
-            free(current->pair);
-            free(current);
-            tree->root = child;
-            child->parent = NULL;
-        } else {
-            // Nodo interno con un solo hijo, actualizar referencias del padre y del hijo
-            if (current->parent->left == current) {
-                current->parent->left = child;
-            } else {
-                current->parent->right = child;
-            }
-            child->parent = current->parent;
-            free(current->pair);
-            free(current);
-        }
-    }
-    // Caso 3: El nodo a eliminar tiene dos hijos
-    else {
-        TreeNode* min = minimum(current->right);
-
-        current->pair->key = min->pair->key;
-        current->pair->value = min->pair->value;
-
-        eraseTreeMap(tree, min->pair->key);
-    }
-}
 
 // Funcion para eliminar el nodo del current del arbol
 void eraseTreeMapCurrent(TreeMap * tree) {
@@ -242,13 +166,30 @@ void eraseTreeMapCurrent(TreeMap * tree) {
         }
     }
     // Caso 3: El nodo actual tiene dos hijos
-    else {
+    else 
+    {
         TreeNode* min = minimum(current->right);
 
         current->pair->key = min->pair->key;
         current->pair->value = min->pair->value;
 
-        eraseTreeMap(tree, min->pair->key);
+        // Eliminar el nodo mínimo sin hacer una llamada recursiva
+        if (min->parent->left == min) 
+        {
+            min->parent->left = min->right;
+        } 
+        else 
+        {
+            min->parent->right = min->right;
+        }
+
+        if (min->right != NULL) 
+        {
+            min->right->parent = min->parent;
+        }
+
+        free(min->pair);
+        free(min);
     }
 
     tree->current = NULL;

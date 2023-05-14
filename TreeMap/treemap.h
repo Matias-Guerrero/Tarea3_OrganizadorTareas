@@ -24,8 +24,6 @@ void insertTreeMap(TreeMap * tree, void* key, void * value); // Funcion actualiz
 // ELIMINACION
 //==============================================================================
 
-void eraseTreeMap(TreeMap * tree, void * key); // Funcion actualizada
-
 void eraseTreeMapCurrent(TreeMap * tree); // Funcion nueva
 
 //==============================================================================

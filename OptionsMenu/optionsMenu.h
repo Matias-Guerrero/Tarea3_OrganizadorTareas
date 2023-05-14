@@ -16,7 +16,7 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
 
 void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas);
 
-// void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea);
+void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea);
 
 // Funcion para rootear codigo
 void recorrerArbolyMapa(TreeMap *arbolTareas, Map *mapaTareas);

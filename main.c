@@ -140,6 +140,12 @@ int main(int argc, const char * argv[])
             case 6:
                 system("cls");
 
+                //Pedir el nombre del archivo
+                ingresarValor(auxiliar, " Ingrese el nombre del archivo");
+
+                // Se llama a la funcion cargarTareas
+                cargarTareas(arbolTareas, mapaTareas, auxiliar);
+
                 break;
 
             case 7:

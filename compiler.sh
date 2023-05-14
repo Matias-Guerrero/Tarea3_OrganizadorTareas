@@ -19,4 +19,4 @@ else
 fi
 
 # Ejectuar el programa en una ventana nueva
-cmd.exe /c $executable.exe
+# cmd.exe /c $executable.exe

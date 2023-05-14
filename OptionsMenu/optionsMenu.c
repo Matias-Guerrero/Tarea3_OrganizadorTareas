@@ -47,7 +47,7 @@ void mostrarMenu()
     puts("3. Mostrar tareas por hacer");
     puts("4. Marcar tarea como completada"); 
     puts("5. Deshacer ultima accion");
-    puts("6. Cargar datos de tareas desde un archivo de texto"); // Sin implementar
+    puts("6. Cargar datos de tareas desde un archivo de texto"); 
     puts("7. Salir");
     puts("=======================================================");
 }
@@ -566,6 +566,90 @@ void deshacerAccion(TreeMap *arbolTareas, Map *mapaTareas, Stack *pilaAcciones)
     }
 
     system("pause");
+}
+
+//===================================================================================================
+// OPCION 6: CARGAR TAREAS
+//===================================================================================================
+
+void cargarTareas(TreeMap *arbolTareas, Map *mapaTareas, char *nombreArchivo)
+{
+    // Se abre el archivo de tareas
+    FILE *archivoTareas = fopen(nombreArchivo, "r");
+
+    // Se verifica si el archivo existe
+    if(archivoTareas == NULL)
+    {
+        // Se muestra un mensaje de error
+        puts("\n========================================");
+        puts("        El archivo no existe");
+        puts("========================================\n");
+    }
+    else // Si el archivo existe
+    {
+        char linea[100*MAXCHAR]; // Variable para almacenar la linea leida del archivo
+        char *lineaPrecedentes; // Variable para almacenar la linea de precedentes  
+
+        // Se lee la primera linea del archivo
+        fgets(linea, 100*MAXCHAR, archivoTareas);
+
+        // Se lee la siguiente linea del archivo
+        while(fgets(linea, 100*MAXCHAR, archivoTareas))
+        {
+            // Se obtiene el nombre de la tarea
+            char *nombreTarea = strtok(linea, ",");
+
+            // Se obtiene la prioridad de la tarea
+            char *prioridadTarea = strtok(NULL, ",");
+            int prioridad = atoi(prioridadTarea);
+
+            // Se obtienen las precencias de la tarea
+            lineaPrecedentes = strtok(NULL, "\n");
+
+            // Se crea una lista para almacenar los precedentes
+            List *listaPrecedentes = createList();
+
+            // Mostramos el nombre y la prioridad de la tarea
+            printf("Nombre: %s\n", nombreTarea);
+            printf("Prioridad: %d\n", prioridad);
+            printf("Precedentes: %s\n", lineaPrecedentes);
+            system("pause");
+
+            // Se verifica si la tarea tiene precedentes
+            if(strlen(lineaPrecedentes) > 0)
+            {
+                // Se obtiene el primer precedente
+                char *precedente = strtok(lineaPrecedentes, " ");
+
+                // Se obtienen los demas precedentes
+                while(strlen(precedente) > 0)
+                {
+                    // Se agrega el precedente a la lista
+                    pushBack(listaPrecedentes, precedente);
+
+                    // Se obtiene el siguiente precedente
+                    precedente = strtok(NULL, " ");
+                }             
+            }
+
+            // Se crea la tarea
+            Tarea *tarea = (Tarea *)malloc(sizeof(Tarea));
+            strcpy(tarea->nombreTarea, nombreTarea);
+            tarea->prioridad = prioridad;
+            tarea->tareasPrecedentes = listaPrecedentes; 
+        }
+
+        // Se muestra un mensaje de exito
+        puts("\n========================================");
+        puts("     Tareas cargadas exitosamente");
+        puts("========================================\n");
+
+        // Se cierra el archivo
+        fclose(archivoTareas);
+
+        system("pause");
+
+    }
 }
 
 

@@ -44,6 +44,12 @@ void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
 void deshacerAccion(TreeMap *arbolTareas, Map *mapaTareas, Stack *pilaAcciones);
 
 //===================================================================================================
+// OPCION 6: CARGAR TAREAS
+//===================================================================================================
+
+void cargarTareas(TreeMap *arbolTareas, Map *mapaTareas, char *nombreArchivo);
+
+//===================================================================================================
 // OTRAS FUNCIONES
 //===================================================================================================
 

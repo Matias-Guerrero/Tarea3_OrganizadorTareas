@@ -10,6 +10,10 @@
 #include "Map/Map.h"
 #include "OptionsMenu/optionsMenu.h"
 
+//===================================================================================================
+// FUNCIONES PARA EL MANEJO DE ARBOL Y MAPA
+//===================================================================================================
+
 /*
   función para comparar claves de tipo int
   retorna 1 si son key1<key2
@@ -27,6 +31,10 @@ int is_equal_string(void * key1, void * key2) {
     if(strcmp((char*)key1, (char*)key2)==0) return 1;
     return 0;
 }
+
+//===================================================================================================
+// FUNCION PRINCIPAL
+//===================================================================================================
 
 int main(int argc, const char * argv[])
 {
@@ -146,8 +154,6 @@ int main(int argc, const char * argv[])
                 system("pause");
         }
     } while (opcion != 7);
-
-
  
     return EXIT_SUCCESS;
 }

@@ -10,7 +10,9 @@
 #include "../TreeMap/treemap.h"
 #include "../Map/map.h"
 
-// Aca se definen las funciones que se van a usar en el main
+//===================================================================================================
+// FUNCIONES HERRAMIENTAS
+//===================================================================================================
 
 // Funcion para buscar en una lista
 bool buscarEnLista(List *lista, char *nombreTarea)
@@ -59,6 +61,10 @@ void ingresarValor(char *valor, char *mensaje)
     while(getchar() != '\n');
 }
 
+//===================================================================================================
+// OPCION 1: AGREGAR TAREA
+//===================================================================================================
+
 // Funcion para agregar una tarea
 void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea)
 {
@@ -93,6 +99,10 @@ void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int 
 
     system("pause");
 }
+
+//===================================================================================================
+// OPCION 2: ESTABLECER PRECEDENCIA ENTRE TAREAS
+//===================================================================================================
 
 // Funcion para establecer precedencia entre tareas
 void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente)
@@ -165,6 +175,10 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
     }
         
 }
+
+//===================================================================================================
+// OPCION 3: MOSTRAR TAREAS POR HACER
+//===================================================================================================
 
 // Funcion para mostrar tareas precedentes de una tarea
 void mostrarTareasPrecedentes(List *tareasPrecedentes)
@@ -306,6 +320,10 @@ void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas)
     free(listaTareasPorHacer);
 }
 
+//===================================================================================================
+// OPCION 4: MARCAR TAREA COMO COMPLETADA
+//===================================================================================================
+
 void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea)
 {
     // Buscar tarea en el mapa
@@ -427,7 +445,7 @@ void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
 
 
 //====================================================================================================
-// Funcion Utilizada para rootear el codigo
+// OTRAS FUNCIONES
 //====================================================================================================
 
 // Funcion para recorrer el arbol y mostrar el contenido
@@ -503,6 +521,3 @@ void recorrerArbolyMapa(TreeMap *arbolTareas, Map *mapaTareas)
         tareaActual = (Tarea *) nextMap(mapaTareas);
     }
 }
-
-//====================================================================================================
-//====================================================================================================

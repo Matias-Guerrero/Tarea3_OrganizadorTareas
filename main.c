@@ -9,6 +9,7 @@
 #include "TreeMap/treemap.h"
 #include "Map/Map.h"
 #include "OptionsMenu/optionsMenu.h"
+#include "Stack/stack.h"
 
 //===================================================================================================
 // FUNCIONES PARA EL MANEJO DE ARBOL Y MAPA
@@ -47,6 +48,7 @@ int main(int argc, const char * argv[])
     // Declaracion de estructuras
     TreeMap* arbolTareas = createTreeMap(lower_than_int);
     Map* mapaTareas = createMap(is_equal_string);
+    Stack* pilaAcciones = stack_create();
 
     // Titulo del programa
     system("cls");
@@ -85,7 +87,7 @@ int main(int argc, const char * argv[])
                 prioridadTarea = atoi(auxiliar);
 
                 // Se llama a la funcion agregarTarea
-                agregarTarea(arbolTareas, mapaTareas, nombreTarea, prioridadTarea);
+                agregarTarea(arbolTareas, mapaTareas, nombreTarea, prioridadTarea, pilaAcciones);
                 
                 break;
 
@@ -105,7 +107,7 @@ int main(int argc, const char * argv[])
                 ingresarValor(nombreTarea, "    Como precedente de " );
                 
                 // Se llama a la funcion establecerPrecedencia
-                establecerPrecedencia(arbolTareas, mapaTareas, nombreTarea, auxiliar);
+                establecerPrecedencia(arbolTareas, mapaTareas, nombreTarea, auxiliar, pilaAcciones);
                 
                 break;
 
@@ -123,12 +125,15 @@ int main(int argc, const char * argv[])
                 // Pedir nombre de la tarea a marcar
                 ingresarValor(nombreTarea, "Ingrese el nombre de la tarea a completar");
 
-                marcarTareaCompletada(arbolTareas, mapaTareas, nombreTarea);
+                marcarTareaCompletada(arbolTareas, mapaTareas, nombreTarea, pilaAcciones);
                 
                 break;
             
             case 5:
                 system("cls");
+
+                // Se llama a la funcion deshacerAccion
+                deshacerAccion(arbolTareas, mapaTareas, pilaAcciones);
                 
                 break;
             
@@ -154,6 +159,11 @@ int main(int argc, const char * argv[])
                 system("pause");
         }
     } while (opcion != 7);
- 
+    
+    // Liberar memoria
+    free(arbolTareas);
+    free(mapaTareas);
+    free(pilaAcciones);
+
     return EXIT_SUCCESS;
 }

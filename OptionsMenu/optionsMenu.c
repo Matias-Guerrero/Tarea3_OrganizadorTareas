@@ -9,6 +9,7 @@
 #include "../List/list.h"
 #include "../TreeMap/treemap.h"
 #include "../Map/map.h"
+#include "../Stack/stack.h"
 
 //===================================================================================================
 // FUNCIONES HERRAMIENTAS
@@ -45,7 +46,7 @@ void mostrarMenu()
     puts("2. Establecer precedencia entre tareas"); 
     puts("3. Mostrar tareas por hacer");
     puts("4. Marcar tarea como completada"); 
-    puts("5. Deshacer ultima accion"); // Sin implementar
+    puts("5. Deshacer ultima accion");
     puts("6. Cargar datos de tareas desde un archivo de texto"); // Sin implementar
     puts("7. Salir");
     puts("=======================================================");
@@ -66,7 +67,7 @@ void ingresarValor(char *valor, char *mensaje)
 //===================================================================================================
 
 // Funcion para agregar una tarea
-void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea)
+void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea, Stack *pilaAcciones)
 {
     if(searchMap(mapaTareas, nombreTarea) == NULL)
     {
@@ -81,6 +82,13 @@ void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int 
         // Agregar tarea al arbol y al mapa
         insertTreeMap(arbolTareas, (void *)tarea->prioridad, (void *)tarea);
         insertMap(mapaTareas, tarea->nombreTarea, tarea);
+
+        // Creamos la accion para agregar a la pila de acciones
+        Accion *accion = (Accion *) malloc(sizeof(Accion));
+        strcpy(accion->nombreAccion, "AgregarTarea");
+        accion->datoAccion = tarea;
+
+        stack_push(pilaAcciones, accion); // Agregamos la accion a la pila de acciones
 
         system("cls");
 
@@ -105,7 +113,7 @@ void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int 
 //===================================================================================================
 
 // Funcion para establecer precedencia entre tareas
-void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente)
+void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente, Stack *pilaAcciones)
 {
     // Verificar que las tareas ingresadas no sean iguales
     if (strcmp(nombreTarea, nombreTareaPrecedente) == 0)
@@ -152,6 +160,13 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
                 }
 
                 Tarea *tareaPrecedente = searchMap(mapaTareas, nombreTareaPrecedente);
+
+                // Creamos la accion para agregar a la pila de acciones
+                Accion *accion = (Accion *) malloc(sizeof(Accion));
+                strcpy(accion->nombreAccion, "establecerPrecedencia");
+                accion->datoAccion = tareaActual;
+
+                stack_push(pilaAcciones, accion); // Agregamos la accion a la pila de acciones
 
                 // Asignar tarea precedente a la lista de precedentes
                 pushBack(tareaActual->tareasPrecedentes, tareaPrecedente);
@@ -324,7 +339,7 @@ void mostrarTareasPorHacer(TreeMap *arbolTareas, Map *mapaTareas)
 // OPCION 4: MARCAR TAREA COMO COMPLETADA
 //===================================================================================================
 
-void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea)
+void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, Stack *pilaAcciones)
 {
     // Buscar tarea en el mapa
     Tarea *tareaActual = (Tarea *) searchMap(mapaTareas, nombreTarea);
@@ -415,8 +430,12 @@ void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
                 // Se elimina la tarea del arbol
                 eraseTreeMapCurrent(arbolTareas);
 
-                // Se libera la memoria de la tarea
-                free(tareaActual);
+                // Creamos la accion para agregar a la pila de acciones
+                Accion *accionActual = (Accion *)malloc(sizeof(Accion));
+                strcpy(accionActual->nombreAccion, "marcarTareaCompletada");
+                accionActual->datoAccion = tareaActual;
+
+                stack_push(pilaAcciones, accionActual); // Se agrega la accion a la pila de acciones
 
                 break;
             }
@@ -441,6 +460,112 @@ void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
 
         system("pause");
     }
+}
+
+//===================================================================================================
+// OPCION 5: DESHACER ULTIMA ACCION
+//===================================================================================================
+
+void deshacerAccion(TreeMap *arbolTareas, Map *mapaTareas, Stack *pilaAcciones)
+{
+    // Se obtiene la accion actual
+    Accion *ultimaAccion = (Accion *)stack_top(pilaAcciones);
+
+    // Se verifica si la pila de acciones esta vacia
+    if(ultimaAccion == NULL)
+    {
+        // Se muestra un mensaje de error
+        puts("\n========================================");
+        puts("        No hay acciones para deshacer");
+        puts("========================================\n");
+
+        system("pause");
+
+        return;
+    }
+
+    // Se verifica si la ultima accion fue agregar tarea
+    if(strcmp(ultimaAccion->nombreAccion, "AgregarTarea") == 0)
+    {
+        // Se elimina la accion de la pila
+        stack_pop(pilaAcciones);
+
+        // Se obtiene la tarea a eliminar
+        Tarea *tareaActual = (Tarea *)ultimaAccion->datoAccion;
+
+        // Se elimina la tarea del mapa
+        eraseMap(mapaTareas, tareaActual->nombreTarea);
+
+        // Recorrer el arbol para eliminar la tarea
+        Pair *parActual = firstTreeMap(arbolTareas);
+
+        while(parActual != NULL)
+        {
+            // Obtener tarea actual
+            Tarea *tareaActualArbol = (Tarea *)parActual->value;
+
+            // Verificar si la tarea actual es la tarea a eliminar
+            if(strcmp(tareaActualArbol->nombreTarea, tareaActual->nombreTarea) == 0)
+            {
+                // Se elimina la tarea del arbol
+                eraseTreeMapCurrent(arbolTareas);
+
+                break;
+            }
+
+            // Avanzar al siguiente par en el árbol
+            parActual = nextTreeMap(arbolTareas);
+        }
+
+        // Se muestra un mensaje de exito
+        puts("\n========================================");
+        puts("        Accion agregarTarea deshecha");
+        puts("========================================\n");
+    }
+
+    // Se verifica si la ultima accion fue establecer precedencia
+    if(strcmp(ultimaAccion->nombreAccion, "establecerPrecedencia") == 0)
+    {
+        // Se elimina la accion de la pila
+        stack_pop(pilaAcciones);
+
+        // Se obtiene la tarea de la accion
+        Tarea *tareaActual = (Tarea *)ultimaAccion->datoAccion;
+
+        // Se elimina el ultimo elemento de la lista de precedentes
+        popCurrent(tareaActual->tareasPrecedentes);
+
+        // Se muestra un mensaje de exito
+        puts("\n========================================");
+        puts("  Accion establecerPrecedencia deshecha");
+        puts("========================================\n");
+    }
+
+    // Se verifica si la ultima accion fue marcar tarea completada
+    if(strcmp(ultimaAccion->nombreAccion, "marcarTareaCompletada") == 0)
+    {
+        // Se elimina la accion de la pila
+        stack_pop(pilaAcciones);
+
+        // Se obtiene la tarea de la accion
+        Tarea *tareaActual = (Tarea *)ultimaAccion->datoAccion;
+
+        // Mostramos la tarea actual
+        puts("\n========================================");
+        printf("  Tarea Actual: %s\n", tareaActual->nombreTarea);
+        puts("========================================\n");
+
+        // Se agrega la tarea completada al arbol y al mapa
+        insertMap(mapaTareas, tareaActual->nombreTarea, tareaActual);
+        insertTreeMap(arbolTareas, (void *)tareaActual->prioridad, (void *)tareaActual);
+
+        // Se muestra un mensaje de exito
+        puts("\n========================================");
+        puts("  Accion marcarTareaCompletada deshecha");
+        puts("========================================\n");
+    }
+
+    system("pause");
 }
 
 

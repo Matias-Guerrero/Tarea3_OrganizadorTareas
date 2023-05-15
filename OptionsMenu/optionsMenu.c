@@ -350,6 +350,9 @@ void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
     // Respuesta del usuario
     char respuesta[2];
 
+    // Se crea una lista para almacenar de donde es precedente la tarea a eliminar
+    List *listaPrecedentesEliminados = createList();
+
     // Verificar si la tarea existe
     if(tareaActual != NULL)
     {
@@ -384,6 +387,15 @@ void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
                         // Se verifica la respuesta
                         if(strcmp(respuesta, "S") == 0 || strcmp(respuesta, "s") == 0)
                         {
+                            // Se crea un puntero a Tarea en cada iteracion
+                            Tarea *tareaConPrecedente = (Tarea *)malloc(sizeof(Tarea));
+
+                            // Se copia la tarea actual en el puntero
+                            memcpy(tareaConPrecedente, tareaActual, sizeof(Tarea));
+
+                            // Se agrega la tarea a la lista de precedentes eliminados
+                            pushBack(listaPrecedentesEliminados, tareaConPrecedente);
+
                             // Se elimina la tarea de la lista de precedentes
                             popCurrent(tareaActual->tareasPrecedentes);
 
@@ -433,7 +445,11 @@ void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
                 // Creamos la accion para agregar a la pila de acciones
                 Accion *accionActual = (Accion *)malloc(sizeof(Accion));
                 strcpy(accionActual->nombreAccion, "marcarTareaCompletada");
-                accionActual->datoAccion = tareaActual;
+
+                // Se agregar la tarea a la lista de tareas eliminadas
+                pushFront(listaPrecedentesEliminados, tareaActual);
+
+                accionActual->datoAccion = listaPrecedentesEliminados;
 
                 stack_push(pilaAcciones, accionActual); // Se agrega la accion a la pila de acciones
 
@@ -547,17 +563,31 @@ void deshacerAccion(TreeMap *arbolTareas, Map *mapaTareas, Stack *pilaAcciones)
         // Se elimina la accion de la pila
         stack_pop(pilaAcciones);
 
-        // Se obtiene la tarea de la accion
-        Tarea *tareaActual = (Tarea *)ultimaAccion->datoAccion;
+        // Se obtiene la lista de tareas precedentes eliminadas
+        List *listaPrecedentesEliminados = (List *)ultimaAccion->datoAccion;
 
-        // Mostramos la tarea actual
-        puts("\n========================================");
-        printf("  Tarea Actual: %s\n", tareaActual->nombreTarea);
-        puts("========================================\n");
+        // Se obtiene la tarea eliminada de la primera posicion de la lista
+        Tarea *tareaActual = (Tarea *)firstList(listaPrecedentesEliminados);
 
         // Se agrega la tarea completada al arbol y al mapa
         insertMap(mapaTareas, tareaActual->nombreTarea, tareaActual);
         insertTreeMap(arbolTareas, (void *)tareaActual->prioridad, (void *)tareaActual);
+
+        // Se obtiene el nombre de la tarea donde es precedente la tarea eliminada
+        Tarea *tareaPrecedenteEliminar = (Tarea *)nextList(listaPrecedentesEliminados);
+
+        // Si la tarea donde es precedente la tarea eliminada no es nula
+        while(tareaPrecedenteEliminar != NULL)
+        {
+            // Buscar la tarea en el mapa
+            Tarea *tareaPrecedente = searchMap(mapaTareas, tareaPrecedenteEliminar->nombreTarea);
+
+            // Se agrega la tarea eliminada a la lista de tareas precedentes de la tarea donde es precedente
+            pushBack(tareaPrecedente->tareasPrecedentes, tareaActual->nombreTarea);
+
+            // Se avanza al siguiente elemento de la lista
+            tareaPrecedenteEliminar = nextList(listaPrecedentesEliminados);
+        }
 
         // Se muestra un mensaje de exito
         puts("\n========================================");
@@ -588,7 +618,11 @@ void cargarTareas(TreeMap *arbolTareas, Map *mapaTareas, char *nombreArchivo)
     else // Si el archivo existe
     {
         char linea[100*MAXCHAR]; // Variable para almacenar la linea leida del archivo
-        char *lineaPrecedentes; // Variable para almacenar la linea de precedentes  
+        char *campo;
+        char *lineaPrecedentes; // Variable para almacenar la linea de precedentes
+
+        char nombreTarea[MAXCHAR];
+        int prioridadTarea; 
 
         // Se lee la primera linea del archivo
         fgets(linea, 100*MAXCHAR, archivoTareas);
@@ -597,11 +631,12 @@ void cargarTareas(TreeMap *arbolTareas, Map *mapaTareas, char *nombreArchivo)
         while(fgets(linea, 100*MAXCHAR, archivoTareas))
         {
             // Se obtiene el nombre de la tarea
-            char *nombreTarea = strtok(linea, ",");
+            campo = strtok(linea, ",");
+            strcpy(nombreTarea, campo);
 
             // Se obtiene la prioridad de la tarea
-            char *prioridadTarea = strtok(NULL, ",");
-            int prioridad = atoi(prioridadTarea);
+            campo = strtok(NULL, ",");
+            prioridadTarea = atoi(campo);
 
             // Se obtienen las precencias de la tarea
             lineaPrecedentes = strtok(NULL, "\n");
@@ -609,34 +644,34 @@ void cargarTareas(TreeMap *arbolTareas, Map *mapaTareas, char *nombreArchivo)
             // Se crea una lista para almacenar los precedentes
             List *listaPrecedentes = createList();
 
-            // Mostramos el nombre y la prioridad de la tarea
-            printf("Nombre: %s\n", nombreTarea);
-            printf("Prioridad: %d\n", prioridad);
-            printf("Precedentes: %s\n", lineaPrecedentes);
-            system("pause");
-
-            // Se verifica si la tarea tiene precedentes
-            if(strlen(lineaPrecedentes) > 0)
+            if(lineaPrecedentes != NULL)
             {
                 // Se obtiene el primer precedente
-                char *precedente = strtok(lineaPrecedentes, " ");
+                campo = strtok(lineaPrecedentes, " ");
 
-                // Se obtienen los demas precedentes
-                while(strlen(precedente) > 0)
+                while (campo != NULL)
                 {
+                    // Se crea una nueva variable precedente en cada iteración
+                    char *precedente = malloc(strlen(campo) + 1);
+                    strcpy(precedente, campo);
+
                     // Se agrega el precedente a la lista
                     pushBack(listaPrecedentes, precedente);
 
                     // Se obtiene el siguiente precedente
-                    precedente = strtok(NULL, " ");
-                }             
+                    campo = strtok(NULL, " ");
+                }
             }
 
             // Se crea la tarea
             Tarea *tarea = (Tarea *)malloc(sizeof(Tarea));
             strcpy(tarea->nombreTarea, nombreTarea);
-            tarea->prioridad = prioridad;
-            tarea->tareasPrecedentes = listaPrecedentes; 
+            tarea->prioridad = prioridadTarea;
+            tarea->tareasPrecedentes = listaPrecedentes;
+
+            // Se agrega la tarea al arbol y al mapa
+            insertMap(mapaTareas, tarea->nombreTarea, tarea);
+            insertTreeMap(arbolTareas, (void *)tarea->prioridad, (void *)tarea);
         }
 
         // Se muestra un mensaje de exito

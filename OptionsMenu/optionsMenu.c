@@ -134,59 +134,46 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
     // Verificar que ambas tareas existan
     if (searchMap(mapaTareas, nombreTarea) != NULL && searchMap(mapaTareas, nombreTareaPrecedente) != NULL)
     {
-        // Buscar tarea en el arbol
-        Pair *current = firstTreeMap(arbolTareas);
+        // Buscar tarea en el mapa
+        Tarea *tareaActual = searchMap(mapaTareas, nombreTarea);
 
-        while (current != NULL)
+        // Verificar que la tarea precedente no exista en la lista de precedentes
+        if (buscarEnLista(tareaActual->tareasPrecedentes, nombreTareaPrecedente))
         {
-            Tarea *tareaActual = (Tarea *)current->value;
+            system("cls");
 
-            if (strcmp(tareaActual->nombreTarea, nombreTarea) == 0)
-            {
-                // Verificar que la tarea precedente no exista en la lista de precedentes
-                if (buscarEnLista(tareaActual->tareasPrecedentes, nombreTareaPrecedente))
-                {
-                    system("cls");
+            // Mostrar mensaje de error
+            puts("\n========================================");
+            puts("    No se puede establecer precedencia");
+            puts("    porque ya existe dicha precedencia");
+            puts("========================================\n");
 
-                    // Mostrar mensaje de error
-                    puts("\n========================================");
-                    puts("    No se puede establecer precedencia");
-                    puts("    porque ya existe dicha precedencia");
-                    puts("========================================\n");
+            system("pause");
 
-                    system("pause");
-
-                    return;
-                }
-
-                Tarea *tareaPrecedente = searchMap(mapaTareas, nombreTareaPrecedente);
-
-                // Creamos la accion para agregar a la pila de acciones
-                Accion *accion = (Accion *) malloc(sizeof(Accion));
-                strcpy(accion->nombreAccion, "establecerPrecedencia");
-                accion->datoAccion = tareaActual;
-
-                stack_push(pilaAcciones, accion); // Agregamos la accion a la pila de acciones
-
-                // Asignar tarea precedente a la lista de precedentes
-                pushBack(tareaActual->tareasPrecedentes, tareaPrecedente);
-
-                system("cls");
-                
-                // Mostrar mensaje de exito
-                puts("\n==================================================");
-                printf("    Se establecio que => %s\n", tareaActual->nombreTarea);
-                printf("    Tiene como precedente => %s\n", nombreTareaPrecedente);
-                puts("========================================\n");
-
-                system("pause");
-
-                break;
-            }
-
-            // Avanzar al siguiente par en el árbol
-            current = nextTreeMap(arbolTareas);
+            return;
         }
+
+        Tarea *tareaPrecedente = searchMap(mapaTareas, nombreTareaPrecedente);
+
+        // Creamos la accion para agregar a la pila de acciones
+        Accion *accion = (Accion *) malloc(sizeof(Accion));
+        strcpy(accion->nombreAccion, "establecerPrecedencia");
+        accion->datoAccion = tareaActual;
+
+        stack_push(pilaAcciones, accion); // Agregamos la accion a la pila de acciones
+
+        // Asignar tarea precedente a la lista de precedentes
+        pushBack(tareaActual->tareasPrecedentes, tareaPrecedente);
+
+        system("cls");
+        
+        // Mostrar mensaje de exito
+        puts("\n==================================================");
+        printf("    Se establecio que => %s\n", tareaActual->nombreTarea);
+        printf("    Tiene como precedente => %s\n", nombreTareaPrecedente);
+        puts("========================================\n");
+
+        system("pause");
     }
         
 }

@@ -1,17 +1,18 @@
 # Tarea3_OrganizadorTareas
 Tarea N°3 de Estructura de Datos, Ingeniería Civil Informática
 
-Organizador de tareas implementado con las TDA árbol binario y lista.
+Organizador de tareas con Estructuras de datos y TDAs.
 ======
 
 ---
-**Antes de Empezar**
+**Preparacion y configuracion del Repositorio**
 
-*   Usamos la aplicación `GitHub Desktop` para crear y actulizar nuestro repositorio local, ya que la misma aplicación realiza `git fetch` y `git pull`
-*   Creamos un repositorio en GitHub, el link es el siguiente: 
-*   Utilizamos Visual Studio Code para que ambos clonaramos el repositorio en sus computadores.
-*   Para subir cada commit los comandos en git bash, como: `git status`, `git add .`, `git commit -m ""` y `git push`
-*   Para ejecutar el codigo se creo un script `compiler.sh` y así crear un archivo `.exe`.
+*   Usamos la aplicación `GitHub Desktop` para crear y actualizar nuestro repositorio local, para evitar usar lo comandos `git fetch` y `git pull`, ya que estos estan integrados en la app.
+*   Creamos un repositorio remoto en GitHub, el link es el siguiente: 
+*   Utilizamos Visual Studio Code para que ambos integrantes clonaramos el repositorio en sus computadores.
+*   Para subir cada commit usamos los siguiente comandos en la terminal git bash, como: `git status`, `git add .`, `git commit -m "[Message]"` y `git push`.
+*   Para compilar la aplicacion se creo un script en bash llamado `compiler.sh`, el cual compila el codigo en c y crea un archivo ejecutable `.exe` con el nombre que uno ingrese.
+*   Para ejecutar la aplicacion se puede hacer el llamado del ejecutable desde la terminal con el comando `./[NombreEjecutable].exe` o simplemente ejecutar el archivo `.exe` desde el administrador de archivos.
 
 ---
 En esta aplicacion implementamos las siguientes estructuras de datos y TDAs: 
@@ -19,8 +20,6 @@ En esta aplicacion implementamos las siguientes estructuras de datos y TDAs:
 * Estructura de datos Arbol binario:
 
   ````c
-  typedef struct TreeNode TreeNode;
-
   struct TreeNode {
       Pair* pair;
       TreeNode * left;
@@ -33,23 +32,11 @@ En esta aplicacion implementamos las siguientes estructuras de datos y TDAs:
       TreeNode * current;
       int (*lower_than) (void* key1, void* key2);
   };
-
-  TreeNode * createTreeNode(void* key, void * value) {
-  TreeNode * new = (TreeNode *)malloc(sizeof(TreeNode));
-  if (new == NULL) return NULL;
-  new->pair = (Pair *)malloc(sizeof(Pair));
-  new->pair->key = key;
-  new->pair->value = value;
-  new->parent = new->left = new->right = NULL;
-  return new;
-  }
   ````
 
 * TDA Mapa:
 
   ````c
-  typedef struct Node Node;
-
   struct Node {
       void * key;
       /*! Puntero al dato */
@@ -76,13 +63,11 @@ En esta aplicacion implementamos las siguientes estructuras de datos y TDAs:
       int (*lower_than)(void* key1, void* key2);
 
   };
-    ````
+  ````
 
 * TDA Lista:
 
   ````c
-  typedef struct Node Node;
-
   struct Node {
       const void * data;
       Node * next;
@@ -93,17 +78,6 @@ En esta aplicacion implementamos las siguientes estructuras de datos y TDAs:
       Node * head;
       Node * tail;
       Node * current;
-  };
-
-  typedef List List;
-
-  Node * createNode(const void * data) {
-      Node * new = (Node *)malloc(sizeof(Node));
-      assert(new != NULL);
-      new->data = data;
-      new->prev = NULL;
-      new->next = NULL;
-      return new;
   };
   ````
 
@@ -138,6 +112,15 @@ Para esto definimos la siguiente struct en c:
     int prioridad;
     char tareaPrecedente[MAXCHAR];
     } Tarea;
+  ````
+  
+* Accion
+
+  ````c
+  typedef struct {
+    char nombreAccion[MAXCHAR];
+    void* datoAccion;
+  } Accion;
   ````
 
 ---

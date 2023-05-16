@@ -656,9 +656,13 @@ void cargarTareas(TreeMap *arbolTareas, Map *mapaTareas, char *nombreArchivo)
             tarea->prioridad = prioridadTarea;
             tarea->tareasPrecedentes = listaPrecedentes;
 
-            // Se agrega la tarea al arbol y al mapa
-            insertMap(mapaTareas, tarea->nombreTarea, tarea);
-            insertTreeMap(arbolTareas, (void *)tarea->prioridad, (void *)tarea);
+            // Se verifica si la tarea ya existe en el mapa
+            if(searchMap(mapaTareas, tarea->nombreTarea) == NULL)
+            {
+                // Si la tarea no existe, se agrega al mapa y al arbol
+                insertMap(mapaTareas, tarea->nombreTarea, tarea);
+                insertTreeMap(arbolTareas, (void *)tarea->prioridad, (void *)tarea);
+            }
         }
 
         // Se muestra un mensaje de exito

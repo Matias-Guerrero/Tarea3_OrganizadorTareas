@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
+//==============================================================================
+// DEFINICION Y CREACION DE ESTRUCTURAS
+//==============================================================================
+
 typedef struct Node Node;
 
 struct Node {
@@ -43,7 +47,6 @@ struct Map {
 
 };
 
-
 Map * createMap(int (*is_equal)(void* key1, void* key2)) {
     Map * new = (Map *)malloc(sizeof(Map));
     assert(new != NULL); // No hay memoria para reservar la Mapa.
@@ -56,6 +59,10 @@ Map * createMap(int (*is_equal)(void* key1, void* key2)) {
 void setSortFunction(Map* map, int (*lower_than)(void* key1, void* key2)){
     map->lower_than = lower_than;
 }
+
+//==============================================================================
+// BUSQUEDA
+//==============================================================================
 
 void * firstMap(Map * list) {
     assert(list != NULL); // list no puede ser NULL.
@@ -77,6 +84,23 @@ void * nextMap(Map * list) {
     return (void *)list->current->data;
 }
 
+void* searchMap(Map * list, void * key) {
+    assert(list != NULL); // list no puede ser NULL.
+
+    Node* aux= list->head;
+    //the minimum element
+    while (aux && list->is_equal(key,aux->key)==0) aux=aux->next;
+
+    list->current=aux;
+    if (list->head == NULL || list->current == NULL) return NULL;
+
+    return (void *) aux->data;
+}
+
+//==============================================================================
+// INSERCION
+//==============================================================================
+
 void _pushFront(Map * list, void * key, void * value) {
     assert(list != NULL); // list no puede ser NULL.
 
@@ -91,7 +115,6 @@ void _pushFront(Map * list, void * key, void * value) {
 
     list->head = new;
 }
-
 
 void insertMap(Map * list, void * key, void * value){
 
@@ -121,7 +144,6 @@ void insertMap(Map * list, void * key, void * value){
         return;
     }
 
-
     while(aux->next && list->lower_than(aux->next->key,key)==1)
         aux=aux->next;
     
@@ -141,8 +163,11 @@ void insertMap(Map * list, void * key, void * value){
     if (list->current == list->tail) {
         list->tail = new;
     }
-
 }
+
+//==============================================================================
+// ELIMINACION
+//==============================================================================
 
 void * _popFront(Map * list) {
     assert(list != NULL); // list no puede ser NULL.
@@ -188,20 +213,6 @@ void * _popBack(Map * list) {
     return data;
 }
 
-
-void* searchMap(Map * list, void * key) {
-    assert(list != NULL); // list no puede ser NULL.
-
-    Node* aux= list->head;
-    //the minimum element
-    while (aux && list->is_equal(key,aux->key)==0) aux=aux->next;
-
-    list->current=aux;
-    if (list->head == NULL || list->current == NULL) return NULL;
-
-    return (void *) aux->data;
-}
-
 void * eraseMap(Map * list, void * key) {
     assert(list != NULL); // list no puede ser NULL.
 
@@ -233,5 +244,3 @@ void * eraseMap(Map * list, void * key) {
 
     return data;
 }
-
-

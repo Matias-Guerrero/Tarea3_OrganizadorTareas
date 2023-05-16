@@ -3,6 +3,10 @@
 #include <assert.h>
 #include "list.h"
 
+//==============================================================================
+// DEFINICION Y CREACION DE ESTRUCTURAS
+//==============================================================================
+
 typedef struct Node Node;
 
 struct Node {
@@ -35,6 +39,10 @@ List * createList() {
      return new;
 }
 
+//==============================================================================
+// BUSQUEDA
+//==============================================================================
+
 void * firstList(List * list) {
     if (list == NULL || list->head == NULL) return NULL;
     list->current = list->head;
@@ -58,6 +66,10 @@ void * prevList(List * list) {
     list->current = list->current->prev;
     return (void *)list->current->data;
 }
+
+//==============================================================================
+// INSERCION
+//==============================================================================
 
 void pushFront(List * list, const void * data) {
     assert(list != NULL);
@@ -97,6 +109,10 @@ void pushCurrent(List * list, const void * data) {
 
 }
 
+//==============================================================================
+// ELIMINACION
+//==============================================================================
+
 void * popFront(List * list) {
     list->current = list->head;
     return popCurrent(list);
@@ -131,14 +147,15 @@ void * popCurrent(List * list) {
         list->head = list->current->next;
         
     list->current = aux->prev;
-
-
-
     
     free(aux);
     
     return data;
 }
+
+//==============================================================================
+// lIMPIEZA
+//==============================================================================
 
 void cleanList(List * list) {
     assert(list != NULL);

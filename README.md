@@ -148,17 +148,21 @@ Dentro de la función main(), se declaran varias variables y estructuras, incluy
 Funciones Implementadas:
 ----
 
-- **Opcion 1 :** `void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea)`.
+- **Opcion 1 :** `void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea, Stack *pilaAcciones)`.
 
-  Cuando el usuario selecciona la opción de agregar tarea en el menú, se llama a la función `agregarTarea()`, que toma cuatro argumentos: un puntero a un árbol de tareas, un puntero a un mapa de tareas, el nombre de la tarea y la prioridad de la tarea.
+  La opción 1 del programa se encarga de agregar una tarea al sistema. Cuando el usuario elige esta opción, se llama a la función `agregarTarea()` que toma varios argumentos, incluyendo un `TreeMap` para almacenar las tareas por orden de prioridad, un `Map` para realizar búsquedas de tareas por nombre, el nombre y la prioridad de la tarea que se va a agregar, y una `Stack` para almacenar las acciones realizadas.
 
-  La función verifica si la tarea ya existe en el mapa de tareas utilizando la función `searchMap()`. Si la tarea no existe, la función crea una nueva tarea utilizando la función `malloc` para asignar memoria dinámicamente.
+  La función comienza verificando si el nombre de la tarea ya existe en el mapa de tareas utilizando la función `searchMap()`. Si la tarea no existe, se procede a crear una nueva tarea. Se reserva memoria dinámicamente para una estructura `Tarea` utilizando la función `malloc()`.
 
-  A continuación, se asignan los valores de la tarea: se copia el nombre de la tarea en la estructura `tarea->nombreTarea`, se asigna la prioridad a la estructura `tarea->prioridad` y se copia una cadena vacía en la estructura `tarea->tareaPrecedente`. La nueva tarea se agrega tanto al árbol de tareas como al mapa de tareas utilizando las funciones `insertTreeMap()` e `insertMap()`, respectivamente.
+  A continuación, se asignan los valores a los campos de la tarea: se copia el nombre de la tarea en la estructura, se asigna la prioridad y se crea una lista vacía para almacenar las tareas precedentes utilizando la función `createList()`.
 
-  Después, se muestra un mensaje de éxito en la pantalla utilizando la función `puts()`. Si la tarea ya existe en el mapa de tareas, se muestra un mensaje de error en su lugar.
+  Posteriormente, se inserta la tarea en el `TreeMap` utilizando la función `insertTreeMap()` con la prioridad como clave y la tarea como valor. También se inserta la tarea en el `Map` utilizando la función `insertMap()` con el nombre de la tarea como clave y la tarea como valor.
 
-  Por último, se utiliza la función `system("pause")` para pausar la ejecución del programa hasta que el usuario presione una tecla.
+  Además, se crea una estructura `Accion` para representar la acción de agregar tarea. Se reserva memoria para la estructura y se asignan los valores correspondientes. Luego, se agrega la acción a la pila de acciones utilizando la función `stack_push()`.
+
+  Si la tarea se agrega exitosamente, se muestra un mensaje de éxito. En caso de que la tarea ya exista, se muestra un mensaje de error.
+
+  Finalmente, se realiza una pausa en la ejecución utilizando la función `system("pause")` para permitir al usuario leer el mensaje y luego continuar con el programa.
 
 - **Opcion 2 :** `void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente)`.
 

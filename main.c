@@ -71,8 +71,29 @@ int main(int argc, const char * argv[])
 
         // Pedir opcion
         printf("Ingrese la opcion que desea realizar: ");
-        scanf("%d", &opcion);
+        scanf("%30[^\n]", auxiliar);
         while(getchar() != '\n');
+
+        do
+        {
+            if(strlen(auxiliar) > 1)
+            {
+                printf("\nOpcion no valida. Intente nuevamente.\n\n");
+                system("pause");
+
+                system("cls");
+
+                // Mostrar menu
+                mostrarMenu();
+                puts("");
+
+                printf("Ingrese la opcion que desea realizar: ");
+                scanf("%30[^\n]", auxiliar);
+                while(getchar() != '\n');
+            }
+        } while(strlen(auxiliar) > 1);
+
+        opcion = atoi(auxiliar);
 
         switch (opcion)
         {

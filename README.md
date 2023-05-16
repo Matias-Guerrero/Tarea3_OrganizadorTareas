@@ -183,15 +183,19 @@ Funciones Implementadas:
   
 - **Opcion 3 :** `void mostrarTareasPorHacer(char *nombreTarea, Map *mapaTareas, List *listaTareasPorHacer)`.
 
-  La función `mostrarTareasPorHacer()` se encarga de mostrar las tareas por hacer, ordenadas por prioridad y precedencia en caso que existan. Recibe como argumentos un árbol de tareas (`arbolTareas`) y un mapa de tareas (`mapaTareas`).
+  La opción 3 del programa se encarga de mostrar las tareas por hacer, ordenadas por prioridad y precedencia. Al seleccionar esta opción, se llama a la función `mostrarTareasPorHacer()`, que toma como argumentos un árbol de tareas (`arbolTareas`) y un mapa de tareas (`mapaTareas`).
 
-  Primero, se verifica que el árbol de tareas no esté vacío utilizando la función `firstTreeMap()`. Si el árbol está vacío, se muestra un mensaje de error en pantalla indicando que no hay tareas por hacer.
+  La función comienza verificando si el árbol de tareas y el mapa de tareas no están vacíos. Si están vacíos, se muestra un mensaje de error y se pausa la ejecución del programa.
 
-  Si el árbol no está vacío, se crea una lista para almacenar las tareas por hacer. Se recorre el árbol de tareas utilizando un ciclo while y se obtiene la tarea actual mediante la función `firstTreeMap()`. Si la tarea actual no se ha completado aún, se verifica si tiene una tarea precedente utilizando la función `strcmp()`. Si tiene una tarea precedente, se llama a la función `mostrarTareasPorHacer()` para mostrar la tarea precedente y sus tareas relacionadas. Luego, se agrega la tarea actual a la lista de tareas por hacer utilizando la función `pushBack()`.
+  Luego, se crea una lista llamada `listaTareasPorHacer` para almacenar las tareas por hacer. A continuación, se recorre el árbol de tareas para obtener las tareas por hacer.
 
-  Después de recorrer todo el árbol de tareas, se muestra en pantalla la lista de tareas por hacer. Se muestra un mensaje de éxito indicando que se van a mostrar las tareas por hacer y se recorre la lista de tareas por hacer utilizando un ciclo while. Para cada tarea por hacer, se muestra su nombre, prioridad y tarea precedente en caso que exista. Si tiene tarea precedente, se muestra también el nombre de la tarea precedente. Por último, se libera la memoria de la lista de tareas por hacer utilizando la función `free()`.
+  Dentro del bucle, se obtiene la tarea actual y se verifica si ya está en la lista de tareas por hacer. Si no está en la lista, se verifica si la tarea tiene tareas precedentes. Si tiene, se utilizan las funciones `guardarTareasPrecedentes()` para guardar las tareas precedentes de manera recursiva en la lista `listaTareasPorHacer`. Luego, se agrega la tarea actual a la lista de tareas por hacer utilizando la función `pushBack()`.
 
-  La función utiliza la función `system("cls")` para limpiar la pantalla y `system("pause")` para pausar la ejecución y esperar a que el usuario presione una tecla antes de continuar.
+  Una vez obtenida la lista de tareas por hacer, se muestra en pantalla cada tarea con su prioridad. Si la tarea tiene tareas precedentes, se llama a la función `mostrarTareasPrecedentes()` para mostrarlas en orden. Finalmente, se muestra un mensaje de éxito y se pausa la ejecución del programa.
+
+  Es importante destacar que la función `mostrarTareasPrecedentes()` se encarga de mostrar las tareas precedentes de una tarea dada. Verifica si la lista de tareas precedentes está vacía y, en caso contrario, recorre la lista para mostrar cada tarea.
+
+  Al finalizar, se libera la memoria utilizada por la lista `listaTareasPorHacer`.
   
 - **Opcion 4 :** `void marcarTareaCompletada(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea)`.
 

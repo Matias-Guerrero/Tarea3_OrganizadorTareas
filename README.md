@@ -164,17 +164,22 @@ Funciones Implementadas:
 
   Finalmente, se realiza una pausa en la ejecución utilizando la función `system("pause")` para permitir al usuario leer el mensaje y luego continuar con el programa.
 
-- **Opcion 2 :** `void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente)`.
+- **Opcion 2 :** `void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, char *nombreTareaPrecedente, Stack *pilaAcciones)`.
 
-  La función `establecerPrecedencia()` se encarga de establecer una tarea precedente para una tarea existente. Recibe como argumentos un árbol de tareas (`arbolTareas`), un mapa de tareas (`mapaTareas`), el nombre de la tarea que se desea modificar (`nombreTarea`) y el nombre de la tarea precedente (`nombreTareaPrecedente`).
+  La opción 2 del programa permite establecer precedencia entre tareas. Cuando el usuario selecciona esta opción, se llama a la función `establecerPrecedencia()` que toma como argumentos un `TreeMap` de tareas, un `Map` de tareas, los nombres de la tarea y la tarea precedente, y una pila de acciones.
 
-  Primero, la función verifica que ambas tareas existan en el mapa de tareas (`mapaTareas`) utilizando la función `searchMap()`. Si ambas tareas existen, se busca la tarea que se desea modificar en el árbol de tareas (`arbolTareas`) utilizando un ciclo while. Se obtiene el valor de cada par clave-valor del árbol de tareas hasta que se encuentra la tarea deseada.
+  La función comienza verificando si las tareas ingresadas son iguales utilizando la función `strcmp()`. Si las tareas son iguales, se muestra un mensaje de error indicando que no se puede establecer precedencia entre una tarea y sí misma.
 
-  Una vez encontrada la tarea, se establece la tarea precedente mediante la asignación del nombre de la tarea precedente en el campo `tareaPrecedente` de la estructura `Tarea`. Posteriormente, se actualiza la tarea en el árbol de tareas utilizando la función `actualizarNodoActual()`, y en el mapa de tareas mediante la función `insertMap()`.
+  Luego, se verifica si ambas tareas existen en el mapa de tareas utilizando la función `searchMap()`. Si ambas tareas existen, se procede a realizar más verificaciones.
 
-  Si se logra establecer la tarea precedente, se muestra un mensaje de éxito en pantalla con el nombre de la tarea y el nombre de su tarea precedente. En caso contrario, se muestra un mensaje de error indicando que la tarea o su precedente no existen.
+  Se busca la tarea actual en el mapa de tareas utilizando la función `searchMap()` y se verifica que la tarea precedente no exista en la lista de precedentes de la tarea actual. Si la tarea precedente ya existe en la lista de precedentes, se muestra un mensaje de error indicando que la precedencia ya está establecida.
 
-  La función utiliza la función `system("cls")` para limpiar la pantalla y `system("pause")` para pausar la ejecución y esperar a que el usuario presione una tecla antes de continuar.
+  Si las verificaciones son exitosas, se crea una acción utilizando la estructura `Accion` y se agrega a la pila de acciones utilizando la función `stack_push()`. Esta acción representa el establecimiento de la precedencia entre las tareas.
+
+  Luego, se agrega la tarea precedente a la lista de precedentes de la tarea actual utilizando la función `pushBack()`.
+
+  Finalmente, se muestra un mensaje de éxito indicando que se ha establecido la precedencia entre las tareas.
+
   
 - **Opcion 3 :** `void mostrarTareasPorHacer(char *nombreTarea, Map *mapaTareas, List *listaTareasPorHacer)`.
 

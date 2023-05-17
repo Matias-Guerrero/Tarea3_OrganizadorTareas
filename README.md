@@ -234,3 +234,26 @@ Funciones Implementadas:
 - **Opcion 7 :**
 
   La opción 7 se encarga de salir del programa. La implementación consiste en imprimir un mensaje de despedida, esperar dos segundos y luego salir del programa.
+
+- **Opcion 8:** `void recorrerArbolyMapa(TreeMap *arbolTareas, Map *mapaTareas)`.
+
+  La opción 8 del programa tiene un propósito oculto y no está disponible para los usuarios regulares. Esta opción está diseñada para el desarrollo y pruebas del código y no debe ser utilizada en un entorno de producción.
+  
+  La función `recorrerArbolyMapa()` se utiliza para mostrar el contenido del árbol binario y el mapa de tareas.
+  
+ **Coevaluacion y trabajo en equipo**
+ ----
+ 
+  - **Coevaluacion Personal**
+
+  | Nombres | Participación | Responsabilidad | Comunicación | Calidad de trabajo | Trabajo en equipo | TOTAL |
+  |--------|--------------|----------------|--------------|--------------------|------------------|-------|
+  | Matias G. | 20 | 20 | 20 | 20 | 20 | 100 |
+  | Fabiana P. | 20 | 20 | 20 | 20 | 20 | 100 |
+
+  - **Coevaluacion Grupal**
+
+  | Evaluación grupal | Participación | Responsabilidad | Comunicación | Calidad de trabajo | Trabajo en equipo | TOTAL |
+  |------------------|--------------|----------------|--------------|--------------------|------------------|-------|
+  | M.G./F.P. | 20 | 20 | 20 | 20 | 20 | 100 |
+ 

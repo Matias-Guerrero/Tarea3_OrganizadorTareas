@@ -210,3 +210,27 @@ Funciones Implementadas:
     
   Al finalizar la deshacer la acción, se muestra un mensaje de éxito y se pausa la ejecución del programa antes de volver al menú principal.
 
+- **Opcion 6 :** `void cargarTareas(TreeMap *arbolTareas, Map *mapaTareas, char *nombreArchivo)`.
+
+  La opción 6 del programa permite cargar tareas desde un archivo. Al seleccionar esta opción, se llama a la función `cargarTareas()` que toma tres argumentos: un árbol de tareas, un mapa de tareas y el nombre del archivo que contiene las tareas.
+
+  La función comienza abriendo el archivo de tareas utilizando la función `fopen()` en modo de lectura ("r"). Si el archivo no existe, se muestra un mensaje de error indicando que el archivo no existe y la función termina.
+
+  Si el archivo existe, se declara una serie de variables necesarias para el procesamiento de las tareas. Luego, se lee la primera línea del archivo (se asume que es una línea de encabezado y se omite su procesamiento).
+
+  A continuación, se inicia un bucle para leer las líneas restantes del archivo. En cada iteración, se realiza lo siguiente:
+
+  - Se obtiene el nombre de la tarea y la prioridad utilizando la función `strtok()` para separar los campos de la línea leída.
+  - Se obtiene la cadena de precedentes de la tarea utilizando `strtok()`.
+  - Se crea una lista para almacenar los precedentes de la tarea utilizando la función `createList()`.
+  - Si la cadena de precedentes no es nula, se separa en tokens utilizando `strtok()` y se agrega cada precedente a la lista mediante `pushBack()`.
+  - Se crea una estructura `Tarea` y se asignan los valores correspondientes.
+  - Se verifica si la tarea ya existe en el mapa de tareas utilizando la función `searchMap()`. Si la tarea no existe, se agrega tanto al mapa de tareas como al árbol de tareas utilizando `insertMap()` e `insertTreeMap()` respectivamente.
+  
+  Una vez que se han procesado todas las líneas del archivo, se muestra un mensaje de éxito indicando que las tareas se han cargado exitosamente. Luego, se cierra el archivo y se pausa la ejecución del programa antes de volver al menú principal.
+
+  Es importante mencionar que este código asume un formato específico para el archivo de tareas, donde cada línea contiene el nombre de la tarea, la prioridad y los precedentes separados por comas. Además, los precedentes están separados por espacios.
+  
+- **Opcion 7 :**
+
+  La opción 7 se encarga de salir del programa. La implementación consiste en imprimir un mensaje de despedida, esperar dos segundos y luego salir del programa.

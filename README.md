@@ -1,10 +1,11 @@
 # Tarea3_OrganizadorTareas
 Tarea N°3 de Estructura de Datos, Ingeniería Civil Informática
 
+---
+
 Organizador de tareas con Estructuras de datos y TDAs.
 ======
 
----
 **Preparacion y configuracion del Repositorio**
 
 *   Usamos la aplicación `GitHub Desktop` para crear y actualizar nuestro repositorio local, para evitar usar lo comandos `git fetch` y `git pull`, ya que estos estan integrados en la app.
@@ -15,6 +16,10 @@ Organizador de tareas con Estructuras de datos y TDAs.
 *   Para ejecutar la aplicacion se puede hacer el llamado del ejecutable desde la terminal con el comando `./[NombreEjecutable].exe` o simplemente ejecutar el archivo `.exe` desde el administrador de archivos.
 
 ---
+
+Estructuras de datos y TDAs implementadas
+---
+
 En esta aplicacion implementamos las siguientes estructuras de datos y TDAs: 
 
 * Estructura de datos Arbol binario:
@@ -96,8 +101,11 @@ En esta aplicacion implementamos las siguientes estructuras de datos y TDAs:
 
     #define stack_top(stack) firstList(stack)
     ````
-
 ---
+
+Structs creadas
+----
+
 Se nos pidio crear una aplicación, la cual tiene por objetivo organizar las tareas por hacer. En donde el usuario ingresa el nombre de la tarea, la prioridad que tiene y establecer si tiene precedencia entre las otras tareas.
 
 Para mantener ordenada nuestro proyecto utilizamos subcarpetas.
@@ -128,7 +136,7 @@ El programa comienza con la función main() que muestra un menú de opciones par
 
 Dentro de la función main(), se declaran varias variables y estructuras, incluyendo dos estructuras de datos, TreeMap y Map, que se utilizan para almacenar y organizar las tareas ingresadas por el usuario.
 
-Funciones Implementadas:
+Funciones Implementadas
 ----
 
 - **Opcion 1 :** `void agregarTarea(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTarea, int prioridadTarea, Stack *pilaAcciones)`.
@@ -240,7 +248,8 @@ Funciones Implementadas:
   La opción 8 del programa tiene un propósito oculto y no está disponible para los usuarios regulares. Esta opción está diseñada para el desarrollo y pruebas del código y no debe ser utilizada en un entorno de producción.
   
   La función `recorrerArbolyMapa()` se utiliza para mostrar el contenido del árbol binario y el mapa de tareas.
-  
+ ---
+ 
  **Coevaluacion y trabajo en equipo**
  ----
  

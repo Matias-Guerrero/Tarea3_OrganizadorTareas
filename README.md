@@ -189,3 +189,24 @@ Funciones Implementadas:
   A continuación, se elimina la tarea del mapa de tareas utilizando la función `eraseMap()`. Luego, se recorre nuevamente el árbol de tareas para encontrar la tarea a eliminar y se utiliza la función `eraseTreeMapCurrent()` para eliminarla del árbol. Se crea una acción (`accionActual`) para agregar a la pila de acciones, que registra la eliminación de la tarea marcada como completada.
 
   Finalmente, se muestra un mensaje de éxito indicando que la tarea se ha completado correctamente. Si la tarea no existe, se muestra un mensaje de error correspondiente.
+  
+- **Opcion 5 :** `void deshacerAccion(TreeMap *arbolTareas, Map *mapaTareas, Stack *pilaAcciones)`.
+
+  La opción 5 del programa permite deshacer la última acción realizada por el usuario. Al seleccionar esta opción, se llama a la función `deshacerAccion()` que toma tres argumentos: un árbol de tareas, un mapa de tareas y una pila de acciones.
+
+  La función comienza obteniendo la última acción realizada desde la parte superior de la pila de acciones utilizando la función `stack_top()`. Si la pila está vacía o no hay acciones para deshacer, se muestra un mensaje de error y la función se termina.
+
+  Luego, se verifica el tipo de la última acción utilizando `strcmp()`. Si la acción fue agregar una tarea, se procede a eliminar la tarea del mapa de tareas utilizando la función `eraseMap()` y del árbol de tareas utilizando la función `eraseTreeMapCurrent()`. Además, se muestra un mensaje de éxito indicando que la acción de agregar tarea ha sido deshecha.
+
+  Si la última acción fue establecer precedencia entre tareas, se elimina el último elemento de la lista de tareas precedentes de la tarea correspondiente. También se muestra un mensaje de éxito indicando que la acción de establecer precedencia ha sido deshecha.
+
+  Si la última acción fue marcar una tarea como completada, se realiza lo siguiente:
+
+    - Se elimina la acción de la pila de acciones.
+    - Se obtiene la lista de tareas precedentes eliminadas de la última acción.
+    - Se agrega la tarea completada nuevamente al mapa de tareas y al árbol de tareas.
+    - Se recorre la lista de tareas precedentes eliminadas y se agrega la tarea completada a la lista de tareas precedentes de cada tarea correspondiente.
+    - Finalmente, se muestra un mensaje de éxito indicando que la acción de marcar tarea como completada ha sido deshecha.
+    
+  Al finalizar la deshacer la acción, se muestra un mensaje de éxito y se pausa la ejecución del programa antes de volver al menú principal.
+

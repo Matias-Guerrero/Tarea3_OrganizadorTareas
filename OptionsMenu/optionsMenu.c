@@ -171,7 +171,7 @@ void establecerPrecedencia(TreeMap *arbolTareas, Map *mapaTareas, char *nombreTa
         puts("\n==================================================");
         printf("    Se establecio que => %s\n", tareaActual->nombreTarea);
         printf("    Tiene como precedente => %s\n", nombreTareaPrecedente);
-        puts("========================================\n");
+        puts("==================================================\n");
 
         system("pause");
     }

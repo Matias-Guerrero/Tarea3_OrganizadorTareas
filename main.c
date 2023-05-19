@@ -102,6 +102,7 @@ int main(int argc, const char * argv[])
                
                 // Pedir nombre de la tarea
                 ingresarValor(nombreTarea, "    Ingrese el nombre de la tarea");
+                puts("");
 
                 // Pedir prioridad de la tarea|
                 ingresarValor(auxiliar, "    Ingrese la prioridad de la tarea");
